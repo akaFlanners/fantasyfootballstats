@@ -1,6 +1,13 @@
 package uk.co.kaboom.projects.java.selenuim.fantasyfootball.stats;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import uk.co.kaboom.projects.java.selenuim.fantasyfootball.stats.exceptions.PlayerStatNotFoundException;
+
 public class Player {
+	
+	private static final Logger logger = LoggerFactory.getLogger(Player.class);
 
 	private String playerIndex;
 	private String player;    
@@ -254,6 +261,219 @@ public class Player {
 	}
 	public void setPriceFallRound(String priceFallRound) {
 		this.priceFallRound = priceFallRound;
+	}
+	
+	public boolean isMatch(Player p) {
+		if(
+				this.getPlayer().equals(p.getPlayer()) && 
+				this.getTeam().equals(p.getTeam()) &&
+				this.getPos().equals(p.getPos()) &&	
+				this.getSelected().equals(p.getSelected()) &&	
+				this.getPrice().equals(p.getPrice()) &&	
+				this.getGw().equals(p.getGw())
+		) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public void setDynamicValue(String key, String value) throws PlayerStatNotFoundException {
+		switch (key) {
+			case "totalScore": this.setTotalScore(value);break;
+			case "roundScore": this.setRoundScore(value);break;
+			case "price": this.setPrice(value);break;
+			case "teamsSelectedBy": this.setTeamsSelectedBy(value);break;
+			case "minutesPlayed": this.setMinutesPlayed(value);break;
+			case "goalsScored": this.setGoalsScored(value);break;
+			case "assists": this.setAssists(value);break;
+			case "cleanSheets": this.setCleanSheets(value);break;
+			case "goalsConceded": this.setGoalsConceded(value);break;
+			case "ownGoals": this.setOwnGoals(value);break;
+			case "penaltiesSaved": this.setPenaltiesSaved(value);break;
+			case "penaltiesMissed": this.setPenaltiesMissed(value);break;
+			case "yellowCards": this.setYellowCards(value);break;
+			case "redCards": this.setRedCards(value);break;
+			case "saves": this.setSaves(value);break;
+			case "bonus": this.setBonus(value);break;
+			case "eaSportsPPI": this.setEaSportsPPI(value);break;
+			case "form": this.setForm(value);break;
+			case "timesInDreamTeam": this.setTimesInDreamTeam(value);break;
+			case "valueForm": this.setValueForm(value);break;
+			case "valueSeason": this.setValueSeason(value);break;
+			case "pointsPerGame": this.setPointsPerGame(value);break;
+			case "transfersIn": this.setTransfersIn(value);break;
+			case "transfersOut": this.setTransfersOut(value);break;
+			case "transfersInRound": this.setTransfersInRound(value);break;
+			case "transfersOutRound": this.setTransfersOutRound(value);break;
+			case "priceRise": this.setPriceRise(value);break;
+			case "priceFall": this.setPriceFall(value);break;
+			case "priceRiseRound": this.setPriceRiseRound(value);break;
+			case "priceFallRound": this.setPriceFallRound(value);break;
+			default: throw new PlayerStatNotFoundException("ERROR: Found unknown statId: " + key);
+		}
+	}
+	
+	
+	public static String getHeaders() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("Assists");
+		sb.append("\t Bonus");
+		sb.append("\t Clean Sheets");
+		sb.append("\t EA Sports PPI");
+		sb.append("\t Form");
+		sb.append("\t Goals Conceeded");
+		sb.append("\t Goals Scored");
+		sb.append("\t GW");
+		sb.append("\t Minutes Played");
+		sb.append("\t Own Goals");
+		sb.append("\t Penalties Missed");
+		sb.append("\t Penalties Saved");
+		sb.append("\t Player");
+		sb.append("\t Player Index");
+		sb.append("\t Points Per Game");
+		sb.append("\t Pos");
+		sb.append("\t Price");
+		sb.append("\t Price Fall");
+		sb.append("\t Price Fall Round");
+		sb.append("\t Price Rise");
+		sb.append("\t Price Rise Round");
+		sb.append("\t Red Cards");
+		sb.append("\t Round Score");
+		sb.append("\t Saves");
+		sb.append("\t Selected");
+		sb.append("\t Team");
+		sb.append("\t Teams Selected By");
+		sb.append("\t Times In Dream Team");
+		sb.append("\t Total Score");
+		sb.append("\t Transfers In");
+		sb.append("\t Transfers In Round");
+		sb.append("\t Transfers Out");
+		sb.append("\t Transfers Out Round");
+		sb.append("\t Value Form");
+		sb.append("\t Value Season");
+		sb.append("\t Yellow Cards");
+		
+		sb.append(System.getProperty("line.separator"));
+		
+		return sb.toString();
+	}
+	
+	public String getData() {
+		StringBuilder sb = new StringBuilder();
+		//sb.append("\t ");
+		sb.append(getAssists());
+		
+		sb.append("\t ");
+		sb.append(getBonus());
+		
+		sb.append("\t ");
+		sb.append(getCleanSheets());
+		
+		sb.append("\t ");
+		sb.append(getEaSportsPPI());
+		
+		sb.append("\t ");
+		sb.append(getForm());
+		
+		sb.append("\t ");
+		sb.append(getGoalsConceded());
+		
+		sb.append("\t ");
+		sb.append(getGoalsScored());
+		
+		sb.append("\t ");
+		sb.append(getGw());
+		
+		sb.append("\t ");
+		sb.append(getMinutesPlayed());
+		
+		sb.append("\t ");
+		sb.append(getOwnGoals());
+		
+		sb.append("\t ");
+		sb.append(getPenaltiesMissed());
+		
+		sb.append("\t ");
+		sb.append(getPenaltiesSaved());
+		
+		sb.append("\t ");
+		sb.append(getPlayer());	
+		
+		sb.append("\t ");
+		sb.append(getPlayerIndex());
+		
+		sb.append("\t ");
+		sb.append(getPointsPerGame());
+		
+		sb.append("\t ");
+		sb.append(getPos());
+		
+		sb.append("\t ");
+		sb.append(getPrice());
+		
+		sb.append("\t ");
+		sb.append(getPriceFall());
+		
+		sb.append("\t ");
+		sb.append(getPriceFallRound());
+		
+		sb.append("\t ");
+		sb.append(getPriceRise());
+		
+		sb.append("\t ");
+		sb.append(getPriceRiseRound());
+		
+		sb.append("\t ");
+		sb.append(getRedCards());
+		
+		sb.append("\t ");
+		sb.append(getRoundScore());
+		
+		sb.append("\t ");
+		sb.append(getSaves());
+		
+		sb.append("\t ");
+		sb.append(getSelected());
+		
+		sb.append("\t ");
+		sb.append(getTeam());
+		
+		sb.append("\t ");
+		sb.append(getTeamsSelectedBy());
+		
+		sb.append("\t ");
+		sb.append(getTimesInDreamTeam());
+		
+		sb.append("\t ");
+		sb.append(getTotalScore());
+		
+		sb.append("\t ");
+		sb.append(getTransfersIn());
+		
+		sb.append("\t ");
+		sb.append(getTransfersInRound());
+		
+		sb.append("\t ");
+		sb.append(getTransfersOut());
+		
+		sb.append("\t ");
+		sb.append(getTransfersOutRound());
+		
+		sb.append("\t ");
+		sb.append(getValueForm());
+		
+		sb.append("\t ");
+		sb.append(getValueSeason());
+		
+		sb.append("\t ");
+		sb.append(getYellowCards());
+		
+		sb.append(System.getProperty("line.separator"));
+
+		return sb.toString();
 	}
 
 }
