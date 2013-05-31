@@ -1,3 +1,4 @@
+package uk.co.kaboom.projects.fantasyfootball.stats.tests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -15,7 +16,8 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({ 
+@SuiteClasses({
+	TestScrapingController.class,
 	TestPlayerData.class,
 	TestPersistence.class
 })

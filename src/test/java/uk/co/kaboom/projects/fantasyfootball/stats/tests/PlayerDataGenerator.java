@@ -1,4 +1,6 @@
-import uk.co.kaboom.projects.java.selenuim.fantasyfootball.stats.Player;
+package uk.co.kaboom.projects.fantasyfootball.stats.tests;
+
+import uk.co.kaboom.projets.fantasyfootball.stats.model.Player;
 
 
 public class PlayerDataGenerator {
@@ -29,20 +31,18 @@ public class PlayerDataGenerator {
     	player.setPriceRise("20");
     	player.setPriceRiseRound("21");
     	player.setRedCards("22");
-    	player.setRoundScore("23");
-    	player.setSaves("24");
-    	player.setSelected("25");
-    	player.setTeam("26");
-    	player.setTeamsSelectedBy("27");
-    	player.setTimesInDreamTeam("28");
-    	player.setTotalScore("29");
-    	player.setTransfersIn("30");
-    	player.setTransfersInRound("31");
-    	player.setTransfersOut("32");
-    	player.setTransfersOutRound("33");
-    	player.setValueForm("34");
-    	player.setValueSeason("35");
-    	player.setYellowCards("36");
+    	player.setSaves("23");
+    	player.setSelected("24");
+    	player.setTeam("25");
+    	player.setTimesInDreamTeam("26");
+    	player.setTotalScore("27");
+    	player.setTransfersIn("28");
+    	player.setTransfersInRound("29");
+    	player.setTransfersOut("30");
+    	player.setTransfersOutRound("31");
+    	player.setValueForm("32");
+    	player.setValueSeason("33");
+    	player.setYellowCards("34");
 		
 		return player;
 	}

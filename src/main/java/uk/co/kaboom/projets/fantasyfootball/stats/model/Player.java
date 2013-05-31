@@ -1,24 +1,23 @@
-package uk.co.kaboom.projects.java.selenuim.fantasyfootball.stats;
+package uk.co.kaboom.projets.fantasyfootball.stats.model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.co.kaboom.projects.java.selenuim.fantasyfootball.stats.exceptions.PlayerStatNotFoundException;
+import uk.co.kaboom.projets.fantasyfootball.stats.exceptions.PlayerStatNotFoundException;
 
 public class Player {
 	
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(Player.class);
 
 	private String playerIndex;
-	private String player;    
-	private String team;      
-	private String pos;       
-	private String selected;  
-	private String price;     
-	private String gw;        
+	private String player;
+	private String team;
+	private String pos;
+	private String selected;
+	private String price;
+	private String gw;
 	private String totalScore;
-	private String roundScore;
-	private String teamsSelectedBy;
 	private String minutesPlayed;
 	private String goalsScored;
 	private String assists;
@@ -93,18 +92,6 @@ public class Player {
 	}
 	public void setTotalScore(String totalScore) {
 		this.totalScore = totalScore;
-	}
-	public String getRoundScore() {
-		return roundScore;
-	}
-	public void setRoundScore(String roundScore) {
-		this.roundScore = roundScore;
-	}
-	public String getTeamsSelectedBy() {
-		return teamsSelectedBy;
-	}
-	public void setTeamsSelectedBy(String teamsSelectedBy) {
-		this.teamsSelectedBy = teamsSelectedBy;
 	}
 	public String getMinutesPlayed() {
 		return minutesPlayed;
@@ -263,8 +250,17 @@ public class Player {
 		this.priceFallRound = priceFallRound;
 	}
 	
+	/**
+	 * This only matches on the stats that are present on every page.
+	 * Thus we can match when a player is first created and have confidence we have selected the correct player again
+	 * (i.e. There has been no issues with mixing up the player index).
+	 * Note: This now also checks the playerIndex's match, previously this was an assumed prerequisite of calling match.
+	 * @param p
+	 * @return
+	 */
 	public boolean isMatch(Player p) {
 		if(
+				this.getPlayerIndex().equals(p.getPlayerIndex()) &&
 				this.getPlayer().equals(p.getPlayer()) && 
 				this.getTeam().equals(p.getTeam()) &&
 				this.getPos().equals(p.getPos()) &&	
@@ -279,12 +275,14 @@ public class Player {
 		}
 	}
 	
+	/*
+	 * Generally considered bad practice to use large switch statements like this.
+	 * However it was my first chance to try String based switches ... so I took it.
+	 */
 	public void setDynamicValue(String key, String value) throws PlayerStatNotFoundException {
 		switch (key) {
 			case "totalScore": this.setTotalScore(value);break;
-			case "roundScore": this.setRoundScore(value);break;
 			case "price": this.setPrice(value);break;
-			case "teamsSelectedBy": this.setTeamsSelectedBy(value);break;
 			case "minutesPlayed": this.setMinutesPlayed(value);break;
 			case "goalsScored": this.setGoalsScored(value);break;
 			case "assists": this.setAssists(value);break;
@@ -341,11 +339,9 @@ public class Player {
 		sb.append("\t Price Rise");
 		sb.append("\t Price Rise Round");
 		sb.append("\t Red Cards");
-		sb.append("\t Round Score");
 		sb.append("\t Saves");
 		sb.append("\t Selected");
 		sb.append("\t Team");
-		sb.append("\t Teams Selected By");
 		sb.append("\t Times In Dream Team");
 		sb.append("\t Total Score");
 		sb.append("\t Transfers In");
@@ -430,9 +426,6 @@ public class Player {
 		sb.append(getRedCards());
 		
 		sb.append("\t ");
-		sb.append(getRoundScore());
-		
-		sb.append("\t ");
 		sb.append(getSaves());
 		
 		sb.append("\t ");
@@ -440,9 +433,6 @@ public class Player {
 		
 		sb.append("\t ");
 		sb.append(getTeam());
-		
-		sb.append("\t ");
-		sb.append(getTeamsSelectedBy());
 		
 		sb.append("\t ");
 		sb.append(getTimesInDreamTeam());

@@ -1,4 +1,4 @@
-package uk.co.kaboom.projects.java.selenuim.fantasyfootball.stats.exceptions;
+package uk.co.kaboom.projets.fantasyfootball.stats.exceptions;
 
 public class PlayerStatNotFoundException extends Exception {
 

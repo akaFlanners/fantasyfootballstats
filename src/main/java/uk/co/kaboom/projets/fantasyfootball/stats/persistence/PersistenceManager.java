@@ -1,4 +1,4 @@
-package uk.co.kaboom.projects.java.selenuim.fantasyfootball.stats;
+package uk.co.kaboom.projets.fantasyfootball.stats.persistence;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -8,7 +8,6 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +46,5 @@ public class PersistenceManager {
 			e.printStackTrace();
 		}
 	}
-	
-	
 	
 }

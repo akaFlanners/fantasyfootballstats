@@ -1,11 +1,11 @@
-package uk.co.kaboom.projects.java.selenuim.fantasyfootball.stats;
+package uk.co.kaboom.projets.fantasyfootball.stats.model;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.co.kaboom.projects.java.selenuim.fantasyfootball.stats.exceptions.PlayerStatNotFoundException;
+import uk.co.kaboom.projets.fantasyfootball.stats.exceptions.PlayerStatNotFoundException;
 
 public class PlayerManager {
 	
@@ -35,7 +35,7 @@ public class PlayerManager {
 		}
 		
 		//Double check player values match
-		if(p.isMatch(existingPlayer)) {  
+		if(p.isMatch(existingPlayer)) {
 			String dynamicValue = driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[10]")).getText();
 			existingPlayer.setDynamicValue(statId, dynamicValue);
 			return true;

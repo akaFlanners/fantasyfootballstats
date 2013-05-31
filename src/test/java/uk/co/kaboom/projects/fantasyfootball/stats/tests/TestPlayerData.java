@@ -1,3 +1,5 @@
+package uk.co.kaboom.projects.fantasyfootball.stats.tests;
+
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -6,11 +8,12 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.co.kaboom.projects.java.selenuim.fantasyfootball.stats.Player;
-import uk.co.kaboom.projects.java.selenuim.fantasyfootball.stats.exceptions.PlayerStatNotFoundException;
+import uk.co.kaboom.projets.fantasyfootball.stats.exceptions.PlayerStatNotFoundException;
+import uk.co.kaboom.projets.fantasyfootball.stats.model.Player;
 
 public class TestPlayerData {
 	
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(TestPlayerData.class);
 
 	private Player player;
@@ -45,11 +48,9 @@ public class TestPlayerData {
 		sb.append("\t Price Rise");
 		sb.append("\t Price Rise Round");
 		sb.append("\t Red Cards");
-		sb.append("\t Round Score");
 		sb.append("\t Saves");
 		sb.append("\t Selected");
 		sb.append("\t Team");
-		sb.append("\t Teams Selected By");
 		sb.append("\t Times In Dream Team");
 		sb.append("\t Total Score");
 		sb.append("\t Transfers In");
@@ -102,14 +103,51 @@ public class TestPlayerData {
 		sb.append("\t 32");
 		sb.append("\t 33");
 		sb.append("\t 34");
-		sb.append("\t 35");
-		sb.append("\t 36");
 		
 		sb.append(System.getProperty("line.separator"));
 		
 	    assertEquals("Player Data returned is incorrect", player.getData(), sb.toString());
 	}
 	
+	/**
+	 * Create a new player and set the relevant stats to be the same as an existing one.
+	 * Check they match.
+	 * Add an additional stat and check they still match.
+	 */
+    @Test
+	public void testIsMatchTrueForBasicMatch() {
+		
+    	//Create player to test
+    	Player expected1 = new Player();
+    	//Set all the stats that are present on every stat screen to match
+    	expected1.setPlayerIndex(player.getPlayerIndex());
+    	expected1.setPlayer(player.getPlayer());
+    	expected1.setTeam(player.getTeam());
+    	expected1.setPos(player.getPos());
+    	expected1.setSelected(player.getSelected());
+    	expected1.setPrice(player.getPrice());
+    	expected1.setGw(player.getGw());
+    	
+    	//Check the players match.
+    	assertTrue(player.isMatch(expected1));
+    	assertTrue(player.isMatch(player));
+    	assertTrue(expected1.isMatch(player));
+    	assertTrue(expected1.isMatch(expected1));
+    	
+    	//Set one non-matched value to be different
+    	expected1.setBonus("400");
+    	
+    	//re-test all conditions still match - the match function should not check any values not on the default screen
+    	assertTrue(player.isMatch(expected1));
+    	assertTrue(player.isMatch(player));
+    	assertTrue(expected1.isMatch(player));
+    	assertTrue(expected1.isMatch(expected1));
+	}
+	
+	/**
+	 * 2 versions of this test - testing the same thing (unsure as to which style is preferred at this moment).
+	 * Probably it is best to use the rule based approach.
+	 */
     @Test
 	public void testDynamicDataExceptions() {
 		try {
@@ -119,21 +157,23 @@ public class TestPlayerData {
 			assertEquals("ERROR: Found unknown statId: Key Does Not Exist", e.getMessage());
 		}
 	}
-    
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
 	@Test
-	public void testDynamicDataExceptions2() throws PlayerStatNotFoundException {
+	public void testDynamicDataExceptionsAlt() throws PlayerStatNotFoundException {
 		thrown.expect(PlayerStatNotFoundException.class);
 		thrown.expectMessage("ERROR: Found unknown statId: Key Does Not Exist");
 		player.setDynamicValue("Key Does Not Exist", "0");
 	}
 	
 	
+	/**
+	 * Dynamic setting and retrieval  
+	 */
 	@Test
-	public void testDynamicData() {
+	public void testGoodDynamicData() {
 		try {
 			player.setDynamicValue("valueSeason", "0");
 			player.setDynamicValue("pointsPerGame", "1");
@@ -141,9 +181,10 @@ public class TestPlayerData {
 			assertEquals("player.getPointsPerGame() should be 1", "1", player.getPointsPerGame());
 		}
 		catch(PlayerStatNotFoundException e) {
+			fail("PlayerStatNotFoundException thrown");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 	}
-
+	
 }
