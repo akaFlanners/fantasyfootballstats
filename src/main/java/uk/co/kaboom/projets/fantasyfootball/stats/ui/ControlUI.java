@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
+
 /**
  * The <code>ControlUI</code> class contains methods associated with form controls on the webpage being accessed.
  * It has various methods to select from dropdown boxes and click on buttons.
@@ -75,32 +77,39 @@ public class ControlUI implements IControllerUI {
 	 */
 	@Override
 	public void populateSortSelectionMap() {
-		sortSelectionMap.put("minutesPlayed", "Minutes played");
-		sortSelectionMap.put("goalsScored", "Goals scored");
-		sortSelectionMap.put("assists", "Assists");
-		sortSelectionMap.put("cleanSheets", "Clean sheets");
-		sortSelectionMap.put("goalsConceded", "Goals conceded");
-		sortSelectionMap.put("ownGoals", "Own goals");
-		sortSelectionMap.put("penaltiesSaved", "Penalties saved");
-		sortSelectionMap.put("penaltiesMissed", "Penalties missed");
-		sortSelectionMap.put("yellowCards", "Yellow cards");
-		sortSelectionMap.put("redCards", "Red cards");
-		sortSelectionMap.put("saves", "Saves");
-		sortSelectionMap.put("bonus", "Bonus");
-		sortSelectionMap.put("eaSportsPPI", "EA SPORTS PPI");
-		sortSelectionMap.put("form", "Form");
-		sortSelectionMap.put("timesInDreamTeam", "Times in Dream Team");
-		sortSelectionMap.put("valueForm", "Value (form)");
-		sortSelectionMap.put("valueSeason", "Value (season)");
-		sortSelectionMap.put("pointsPerGame", "Points per game");
-		sortSelectionMap.put("transfersIn", "Transfers in");
-		sortSelectionMap.put("transfersOut", "Transfers out");
-		sortSelectionMap.put("transfersInRound", "Transfers in (round)");
-		sortSelectionMap.put("transfersOutRound", "Transfers out (round)");
-		sortSelectionMap.put("priceRise", "Price rise");
-		sortSelectionMap.put("priceFall", "Price fall");
-		sortSelectionMap.put("priceRiseRound", "Price rise (round)");
-		sortSelectionMap.put("priceFallRound", "Price fall (round)");
+		
+		for (PlayerStat playerstat : PlayerStat.values()) {
+			if(playerstat.isDropDownDelection()) {
+				sortSelectionMap.put(playerstat.getStatName(), playerstat.getDropdownText());
+			}
+		}
+
+//		sortSelectionMap.put("minutesPlayed", "Minutes played");
+//		sortSelectionMap.put("goalsScored", "Goals scored");
+//		sortSelectionMap.put("assists", "Assists");
+//		sortSelectionMap.put("cleanSheets", "Clean sheets");
+//		sortSelectionMap.put("goalsConceded", "Goals conceded");
+//		sortSelectionMap.put("ownGoals", "Own goals");
+//		sortSelectionMap.put("penaltiesSaved", "Penalties saved");
+//		sortSelectionMap.put("penaltiesMissed", "Penalties missed");
+//		sortSelectionMap.put("yellowCards", "Yellow cards");
+//		sortSelectionMap.put("redCards", "Red cards");
+//		sortSelectionMap.put("saves", "Saves");
+//		sortSelectionMap.put("bonus", "Bonus");
+//		sortSelectionMap.put("eaSportsPPI", "EA SPORTS PPI");
+//		sortSelectionMap.put("form", "Form");
+//		sortSelectionMap.put("timesInDreamTeam", "Times in Dream Team");
+//		sortSelectionMap.put("valueForm", "Value (form)");
+//		sortSelectionMap.put("valueSeason", "Value (season)");
+//		sortSelectionMap.put("pointsPerGame", "Points per game");
+//		sortSelectionMap.put("transfersIn", "Transfers in");
+//		sortSelectionMap.put("transfersOut", "Transfers out");
+//		sortSelectionMap.put("transfersInRound", "Transfers in (round)");
+//		sortSelectionMap.put("transfersOutRound", "Transfers out (round)");
+//		sortSelectionMap.put("priceRise", "Price rise");
+//		sortSelectionMap.put("priceFall", "Price fall");
+//		sortSelectionMap.put("priceRiseRound", "Price rise (round)");
+//		sortSelectionMap.put("priceFallRound", "Price fall (round)");
 	 }
 	
 	@Override
