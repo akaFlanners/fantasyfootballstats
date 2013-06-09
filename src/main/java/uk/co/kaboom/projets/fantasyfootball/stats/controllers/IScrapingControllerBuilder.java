@@ -1,10 +1,8 @@
 package uk.co.kaboom.projets.fantasyfootball.stats.controllers;
 
-import org.openqa.selenium.WebDriver;
+import uk.co.kaboom.projets.fantasyfootball.stats.model.Team;
 
 
 public interface IScrapingControllerBuilder {
-
-	public abstract ScrapingController build(WebDriver driver);
-
+	public IScrapingController getThreadedInstance(Team team);
 }

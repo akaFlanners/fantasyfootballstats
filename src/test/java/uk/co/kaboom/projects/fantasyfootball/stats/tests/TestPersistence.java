@@ -1,6 +1,5 @@
 package uk.co.kaboom.projects.fantasyfootball.stats.tests;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,9 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxBinary;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +17,8 @@ import org.slf4j.LoggerFactory;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.Player;
 import uk.co.kaboom.projets.fantasyfootball.stats.persistence.PersistenceManager;
 import uk.co.kaboom.projets.fantasyfootball.stats.processing.PageProcessor;
+import uk.co.kaboom.projets.fantasyfootball.stats.selenium.WedDriverFactory;
 import uk.co.kaboom.projets.fantasyfootball.stats.ui.ControlUI;
-
 
 public class TestPersistence {
 	
@@ -36,11 +32,8 @@ public class TestPersistence {
 	
 	@Before
 	public void setUp() throws Exception {
-    	File pathToBinary = new File(System.getenv("FIREFOX_HOME"));
-    	FirefoxBinary ffBinary = new FirefoxBinary(pathToBinary);
-    	FirefoxProfile firefoxProfile = new FirefoxProfile();
-    	driver = new FirefoxDriver(ffBinary,firefoxProfile);
-	
+		driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.CHROME);
+
     	playerDataMap = new HashMap<String, Player>();
     	Map<String, String> viewSelectionMap = new HashMap<String, String>();
     	Map<String, String> sortSelectionMap = new HashMap<String, String>();
@@ -148,7 +141,6 @@ public class TestPersistence {
 	public void tearDown() {
 		if(driver != null) {
 			driver.close();
-        	driver.quit();
 		}
 	}
 

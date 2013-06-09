@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import uk.co.kaboom.projects.fantasyfootball.stats.tests.mocks.ScrapingControllerBuilderMock;
 import uk.co.kaboom.projets.fantasyfootball.stats.controllers.IScrapingController;
+import uk.co.kaboom.projets.fantasyfootball.stats.controllers.TeamQueueManager;
+import uk.co.kaboom.projets.fantasyfootball.stats.model.Team;
 
 
 public class TestScrapingController {
@@ -24,15 +26,21 @@ public class TestScrapingController {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		scb = new ScrapingControllerBuilderMock();
-		this.controller = scb.build(null);
+		scb = new ScrapingControllerBuilderMock(); //This ensures pageProcessorMock is used.
+		Team team = TeamQueueManager.INSTANCE.getNext();    // Will return null if none left in queue.
+		if(team != null) {	
+			this.controller = scb.getThreadedInstance(team);
+		}
+		else {
+			fail("Team returned null");
+		}
 	}
 
 	@Test
 	public void test() {
 		controller.scrape();
 		logger.debug("sortsize * viewsize: " + scb.sortSelectionMap.size() + " * " + scb.viewSelectionMap.size() + " = " + scb.sortSelectionMap.size() * scb.viewSelectionMap.size() + " matching loops: " + scb.pageProcessor.getCount());
-		assertEquals("Count of calls equal to the list counts multiplied", scb.pageProcessor.getCount(), scb.sortSelectionMap.size() * scb.viewSelectionMap.size());
+		assertEquals("Count of calls equal to the list counts multiplied", scb.sortSelectionMap.size() * scb.viewSelectionMap.size(), scb.pageProcessor.getCount());
 	}
 
 }

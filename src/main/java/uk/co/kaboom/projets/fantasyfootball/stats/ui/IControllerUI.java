@@ -2,6 +2,8 @@ package uk.co.kaboom.projets.fantasyfootball.stats.ui;
 
 import java.util.Map;
 
+import org.openqa.selenium.WebDriver;
+
 public interface IControllerUI {
 
 	/**
@@ -26,5 +28,7 @@ public interface IControllerUI {
 	public void updateData2(String viewKey, String sortKey);
 	
 	public void home();
+	
+	public WebDriver getDriver();
 
 }

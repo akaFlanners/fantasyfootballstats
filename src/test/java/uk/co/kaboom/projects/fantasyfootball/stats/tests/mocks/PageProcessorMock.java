@@ -32,6 +32,6 @@ public class PageProcessorMock implements IPageProcessor {
 	}
 	
 	public String getDataToPersist(){
-		return null;
+		return "TESTING Persist";
 	}
 }

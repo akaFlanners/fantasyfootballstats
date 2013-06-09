@@ -17,12 +17,14 @@ public class PageProcessor implements IPageProcessor {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PageProcessor.class);
 	
-	private Map<String, Player> playerDataMap;
+	private static Map<String, Player> playerDataMap;
 	private WebDriver driver;
 	private IControllerUI controlUI;
 	
 	public PageProcessor(Map<String, Player> playerDataMap, WebDriver driver, IControllerUI controlUI) {
-		this.playerDataMap = playerDataMap;
+		if(PageProcessor.playerDataMap == null) {
+			PageProcessor.playerDataMap = playerDataMap;
+		}
 		this.driver = driver;
 		this.controlUI = controlUI;
 	}
@@ -77,7 +79,7 @@ public class PageProcessor implements IPageProcessor {
 		}
 	}
 
-	public Map<String, Player> getPlayerDataMap() {
+	public static Map<String, Player> getPlayerDataMap() {
 		return playerDataMap;
 	}
 

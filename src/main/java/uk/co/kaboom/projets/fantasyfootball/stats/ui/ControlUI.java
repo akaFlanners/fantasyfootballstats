@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
+import uk.co.kaboom.projets.fantasyfootball.stats.model.Team;
 
 /**
  * The <code>ControlUI</code> class contains methods associated with form controls on the webpage being accessed.
@@ -39,26 +40,9 @@ public class ControlUI implements IControllerUI {
 	 */
 	@Override
 	public void populateViewSelectionMap() {
-		viewSelectionMap.put("te_1"  ,"Arsenal"    );
-		viewSelectionMap.put("te_2"  ,"Aston Villa");	
-		viewSelectionMap.put("te_3"  ,"Chelsea"    );
-		viewSelectionMap.put("te_4"  ,"Everton"    );
-		viewSelectionMap.put("te_5"  ,"Fulham"     );
-		viewSelectionMap.put("te_6"  ,"Liverpool"  );
-		viewSelectionMap.put("te_7"  ,"Man City"   );
-		viewSelectionMap.put("te_8"  ,"Man Utd"    );
-		viewSelectionMap.put("te_9"  ,"Newcastle"  );
-		viewSelectionMap.put("te_10" ,"Norwich"    );
-		viewSelectionMap.put("te_11" ,"QPR"        );
-		viewSelectionMap.put("te_12" ,"Reading"    );
-		viewSelectionMap.put("te_13" ,"Southampton");
-		viewSelectionMap.put("te_14" ,"Stoke City" );
-		viewSelectionMap.put("te_15" ,"Sunderland" );
-		viewSelectionMap.put("te_16" ,"Swansea"    );
-		viewSelectionMap.put("te_17" ,"Tottenham"  );
-		viewSelectionMap.put("te_18" ,"West Brom"  );
-		viewSelectionMap.put("te_19" ,"West Ham"   );
-		viewSelectionMap.put("te_20" ,"Wigan"      );
+		for (Team team : Team.values()) {
+			viewSelectionMap.put(team.getDropdownSelection(), team.getTeamName());
+		}
 	}
 	
 	//These are facade methods. Could be used to protect implementation details. 
@@ -77,39 +61,11 @@ public class ControlUI implements IControllerUI {
 	 */
 	@Override
 	public void populateSortSelectionMap() {
-		
 		for (PlayerStat playerstat : PlayerStat.values()) {
 			if(playerstat.isDropDownDelection()) {
 				sortSelectionMap.put(playerstat.getStatName(), playerstat.getDropdownText());
 			}
 		}
-
-//		sortSelectionMap.put("minutesPlayed", "Minutes played");
-//		sortSelectionMap.put("goalsScored", "Goals scored");
-//		sortSelectionMap.put("assists", "Assists");
-//		sortSelectionMap.put("cleanSheets", "Clean sheets");
-//		sortSelectionMap.put("goalsConceded", "Goals conceded");
-//		sortSelectionMap.put("ownGoals", "Own goals");
-//		sortSelectionMap.put("penaltiesSaved", "Penalties saved");
-//		sortSelectionMap.put("penaltiesMissed", "Penalties missed");
-//		sortSelectionMap.put("yellowCards", "Yellow cards");
-//		sortSelectionMap.put("redCards", "Red cards");
-//		sortSelectionMap.put("saves", "Saves");
-//		sortSelectionMap.put("bonus", "Bonus");
-//		sortSelectionMap.put("eaSportsPPI", "EA SPORTS PPI");
-//		sortSelectionMap.put("form", "Form");
-//		sortSelectionMap.put("timesInDreamTeam", "Times in Dream Team");
-//		sortSelectionMap.put("valueForm", "Value (form)");
-//		sortSelectionMap.put("valueSeason", "Value (season)");
-//		sortSelectionMap.put("pointsPerGame", "Points per game");
-//		sortSelectionMap.put("transfersIn", "Transfers in");
-//		sortSelectionMap.put("transfersOut", "Transfers out");
-//		sortSelectionMap.put("transfersInRound", "Transfers in (round)");
-//		sortSelectionMap.put("transfersOutRound", "Transfers out (round)");
-//		sortSelectionMap.put("priceRise", "Price rise");
-//		sortSelectionMap.put("priceFall", "Price fall");
-//		sortSelectionMap.put("priceRiseRound", "Price rise (round)");
-//		sortSelectionMap.put("priceFallRound", "Price fall (round)");
 	 }
 	
 	@Override
@@ -129,7 +85,11 @@ public class ControlUI implements IControllerUI {
 	public SelectboxHandler getSortSelectionHandler() {
 		 return sortSelectbox;
 	 }
-
+	
+	public WebDriver getDriver() {
+		return driver;
+	}
+	
 	 public void waitForFooterLogo() {
 	     (new WebDriverWait(driver, 50)).until(new ExpectedCondition<Boolean>() {
 	         public Boolean apply(WebDriver d) {
@@ -154,9 +114,7 @@ public class ControlUI implements IControllerUI {
 		 driver.get("http://fantasy.premierleague.com/stats/elements/");
 	 }
 	 
-	 
 	 public void clickShow() {
 		 driver.findElement(By.xpath("/html/body/div[3]/div/div/div/section/form/input")).click();
 	 }
-
 }

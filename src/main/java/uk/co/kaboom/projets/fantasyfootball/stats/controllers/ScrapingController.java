@@ -5,6 +5,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.co.kaboom.projets.fantasyfootball.stats.model.Team;
+import uk.co.kaboom.projets.fantasyfootball.stats.persistence.PersistenceManager;
 import uk.co.kaboom.projets.fantasyfootball.stats.processing.IPageProcessor;
 import uk.co.kaboom.projets.fantasyfootball.stats.ui.IControllerUI;
 
@@ -15,17 +17,30 @@ import uk.co.kaboom.projets.fantasyfootball.stats.ui.IControllerUI;
  * @author FlannersAdmin
  *
  */
-public class ScrapingController implements IScrapingController{
+public class ScrapingController implements IScrapingController, Runnable {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ScrapingController.class);
 	
     private IControllerUI controlUI;
 	private IPageProcessor pageProcessor;
+	private Team team = null;
+	private PersistenceManager pm;
 
-	public ScrapingController(IControllerUI controlUI, IPageProcessor pageProcessor) {
+//	public ScrapingController(IControllerUI controlUI, IPageProcessor pageProcessor) {
+//		logger.debug("Creating Scraping Controller");
+//		this.controlUI = controlUI;
+//		this.pageProcessor = pageProcessor;
+//		this.team = Team.ARSENAL;
+//		//TODO: 2013/06/06: Do something with hardcoded te_1
+//	}
+	
+	
+	public ScrapingController(IControllerUI controlUI, IPageProcessor pageProcessor, Team team, PersistenceManager pm) {
 		logger.debug("Creating Scraping Controller");
 		this.controlUI = controlUI;
 		this.pageProcessor = pageProcessor;
+		this.team = team;
+		this.pm = pm;
 	}
 	
 	/**
@@ -33,35 +48,79 @@ public class ScrapingController implements IScrapingController{
 	 */
 	@Override
 	public void scrape() {
-		logger.debug("scrape()");
-		//controlUI.home();
+		logger.debug("scrape() for team " + this.getTeam());
 		iterate();
+		complete();
 	}
+	
+	public void complete() {
+		logger.info("Completed: " + team.getTeamName());
+		if (TeamQueueManager.INSTANCE.completed(team)) {
+			logger.info("All Complete: " + team.getTeamName());
+			controlUI.getDriver().close();
+			
+			logger.info("Writing Out data");
+			pm.persistToFile(pageProcessor.getDataToPersist());
+		}
+		else {
+			logger.info("Not everything has completed");
+			Team nextTeam = TeamQueueManager.INSTANCE.getNext();
+			if (nextTeam != null) {
+				logger.info(team.getTeamName() + " found Additional unprocessed team: " + nextTeam.getTeamName());
+				team = nextTeam;
+				scrape();
+			}
+			else {
+				logger.info("No more teams to process - waiting for other threads to complete.");
+				controlUI.getDriver().close();
+			}
+		}
+	}
+	
+	
 	
 	/**
 	 * Iterate over the list of dropdowns
 	 * Loop through each sort type for each of the views (teams).
 	 */
 	private void iterate() {
-		logger.debug("iterate()");
-		int count = 0;
 		
-		for (Map.Entry<String, String> sortEntry : controlUI.getSortSelectionMap().entrySet()) {		
+		logger.debug("iterate() for " + this.getTeam());
+		int count = 0;
+		Thread.yield();
+		for (Map.Entry<String, String> sortEntry : controlUI.getSortSelectionMap().entrySet()) {
 			count++;
-			for (Map.Entry<String, String> viewEntry : controlUI.getViewSelectionMap().entrySet()) {
-				logger.debug("Iterating, count ("+count+")" + viewEntry.getKey() + " : " + sortEntry.getKey());
-				if(count <= 1) {
-					pageProcessor.process(viewEntry.getKey(), sortEntry.getKey());
-				}
-				else {
-					pageProcessor.process2(viewEntry.getKey(), sortEntry.getKey());
-				}
+			
+			logger.debug("Iterating, count ("+count+") " + team + " : " + sortEntry.getKey());
+			
+			if(count==1) {
+				pageProcessor.process(team.getDropdownSelection(), sortEntry.getKey());
 			}
+			else {
+				pageProcessor.process2(team.getDropdownSelection(), sortEntry.getKey());
+			}
+			Thread.yield();
 		}
+		
 	}
 	
+	//TODO:REMOVE
 	public IPageProcessor getPageProcessor() {
 		return pageProcessor;
 	}
+	
+	//TODO:REMOVE
+	public IControllerUI getControllerUI() {
+		return controlUI;
+	}
+	public Team getTeam() {
+		return team;
+	}
 
+	@Override
+	public void run() {
+		logger.debug("Run called on thread for: " + this.getTeam());
+		scrape();
+	}
+	
 }
