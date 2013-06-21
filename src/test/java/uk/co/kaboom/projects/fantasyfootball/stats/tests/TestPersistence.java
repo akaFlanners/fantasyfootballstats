@@ -32,7 +32,7 @@ public class TestPersistence {
 	
 	@Before
 	public void setUp() throws Exception {
-		driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.CHROME);
+		driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.FIREFOX);
 
     	playerDataMap = new HashMap<String, Player>();
     	Map<String, String> viewSelectionMap = new HashMap<String, String>();
@@ -60,8 +60,8 @@ public class TestPersistence {
 	
 	
 	/**
-	 * Selects a dropdown 3 times.
-	 * Confirms that the correct dropdown is selected.
+	 * Selects a drop-down 3 times.
+	 * Confirms that the correct drop-down is selected.
 	 */
 	@Test
 	public void testUpdateDataWithGoodData() {
@@ -104,8 +104,8 @@ public class TestPersistence {
 	
 	
 	/**
-	 * Selects a valid dropdown then an invalid one.
-	 * Confirms that the original dropdown is still selected.
+	 * Selects a valid drop-down then an invalid one.
+	 * Confirms that the original drop-down is still selected.
 	 */
 	@Test
 	public void testUpdateDataWithBadData() {
@@ -129,7 +129,7 @@ public class TestPersistence {
 		controlUI.waitForFooterLogo();
 		controlUI.getSortSelectionHandler().selectOption("baddata"); //Attempt to select value that does not exist.
 		
-		//Dropdown should remain as it was.
+		//Drop-down should remain as it was.
 		expectedText = "EA SPORTS PPI";
 		select = new Select(driver.findElement(locator));
 		actualText = select.getFirstSelectedOption().getText();

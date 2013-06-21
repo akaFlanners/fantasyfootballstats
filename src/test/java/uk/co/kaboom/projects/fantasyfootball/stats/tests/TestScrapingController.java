@@ -42,5 +42,5 @@ public class TestScrapingController {
 		logger.debug("sortsize * viewsize: " + scb.sortSelectionMap.size() + " * " + scb.viewSelectionMap.size() + " = " + scb.sortSelectionMap.size() * scb.viewSelectionMap.size() + " matching loops: " + scb.pageProcessor.getCount());
 		assertEquals("Count of calls equal to the list counts multiplied", scb.sortSelectionMap.size() * scb.viewSelectionMap.size(), scb.pageProcessor.getCount());
 	}
-
+	
 }

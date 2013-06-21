@@ -26,15 +26,6 @@ public class ScrapingController implements IScrapingController, Runnable {
 	private Team team = null;
 	private PersistenceManager pm;
 
-//	public ScrapingController(IControllerUI controlUI, IPageProcessor pageProcessor) {
-//		logger.debug("Creating Scraping Controller");
-//		this.controlUI = controlUI;
-//		this.pageProcessor = pageProcessor;
-//		this.team = Team.ARSENAL;
-//		//TODO: 2013/06/06: Do something with hardcoded te_1
-//	}
-	
-	
 	public ScrapingController(IControllerUI controlUI, IPageProcessor pageProcessor, Team team, PersistenceManager pm) {
 		logger.debug("Creating Scraping Controller");
 		this.controlUI = controlUI;
@@ -73,10 +64,10 @@ public class ScrapingController implements IScrapingController, Runnable {
 			else {
 				logger.info("No more teams to process - waiting for other threads to complete.");
 				controlUI.getDriver().close();
+				logger.info("Closed Driver");
 			}
 		}
 	}
-	
 	
 	
 	/**
@@ -87,7 +78,6 @@ public class ScrapingController implements IScrapingController, Runnable {
 		
 		logger.debug("iterate() for " + this.getTeam());
 		int count = 0;
-		Thread.yield();
 		for (Map.Entry<String, String> sortEntry : controlUI.getSortSelectionMap().entrySet()) {
 			count++;
 			
@@ -99,20 +89,10 @@ public class ScrapingController implements IScrapingController, Runnable {
 			else {
 				pageProcessor.process2(team.getDropdownSelection(), sortEntry.getKey());
 			}
-			Thread.yield();
 		}
 		
 	}
 	
-	//TODO:REMOVE
-	public IPageProcessor getPageProcessor() {
-		return pageProcessor;
-	}
-	
-	//TODO:REMOVE
-	public IControllerUI getControllerUI() {
-		return controlUI;
-	}
 	public Team getTeam() {
 		return team;
 	}

@@ -21,12 +21,11 @@ public class Runner {
 		if (System.getenv("FIREFOX_HOME") != null) {
 	    	IScrapingControllerBuilder scb = new ScrapingControllerBuilder();
 	        CollectionThreadSpawner cts = new CollectionThreadSpawner();
-	        cts.setupThreads(scb, 1);
+	        cts.setupThreads(scb, 3);
 		}
 		else {
 			String message = "Please set system environment variable FIREFOX_HOME as path to firefox instance: e.g. C:/Browsers/firefox.exe";
 			logger.warn(message);
 		}
-
 	}
 }

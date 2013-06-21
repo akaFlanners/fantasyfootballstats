@@ -27,6 +27,16 @@ public class PlayerManager {
 		return p;
 	}
 	
+	public Player generateScrapedPlayerWithoutChecks(WebDriver driver, int i) {
+		
+		Player p = new Player();
+		
+		p.setPlayerIndex(driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[2]/a")).getAttribute("href").split("#")[1] );
+		p.setPlayer(     driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[3]")).getText() );
+
+		return p;
+	}
+
 	public boolean updatePlayer(Player p, WebDriver driver, int i,  Player existingPlayer, String statId) throws PlayerStatNotFoundException {
 		if(existingPlayer == null) {
 			logger.debug("Null returned with:  \n" + p.getPlayerIndex());

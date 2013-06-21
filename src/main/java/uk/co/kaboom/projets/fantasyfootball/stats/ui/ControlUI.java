@@ -45,15 +45,6 @@ public class ControlUI implements IControllerUI {
 		}
 	}
 	
-	//These are facade methods. Could be used to protect implementation details. 
-	public int viewSelectionOptionSize() {  //TODO: remove as not used
-		return viewSelectionMap.size();
-	}
-	
-	public int sortSelectionOptionSize() {  //TODO: remove as not used
-		return sortSelectionMap.size();
-	}
-	
 	/**
 	 * This list only contains those stats that are not present on every page (i.e. the column 10 stats).
 	 * The other stats will all already be collected by the very first pass through.
@@ -91,6 +82,7 @@ public class ControlUI implements IControllerUI {
 	}
 	
 	 public void waitForFooterLogo() {
+		 Thread.yield();
 	     (new WebDriverWait(driver, 50)).until(new ExpectedCondition<Boolean>() {
 	         public Boolean apply(WebDriver d) {
 	             boolean isFooterLogoFound = driver.findElements(By.cssSelector("div.footerLogo")).size() > 0;

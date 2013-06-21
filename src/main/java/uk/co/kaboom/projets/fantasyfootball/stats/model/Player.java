@@ -261,12 +261,14 @@ public class Player {
 	public boolean isMatch(Player p) {
 		if(
 				this.getPlayerIndex().equals(p.getPlayerIndex()) &&
-				this.getPlayer().equals(p.getPlayer()) && 
-				this.getTeam().equals(p.getTeam()) &&
-				this.getPos().equals(p.getPos()) &&	
-				this.getSelected().equals(p.getSelected()) &&	
-				this.getPrice().equals(p.getPrice()) &&	
-				this.getGw().equals(p.getGw())
+				this.getPlayer().equals(p.getPlayer())
+//				&& 
+//				this.getTeam().equals(p.getTeam()) &&
+//				this.getPos().equals(p.getPos()) &&	
+//				this.getSelected().equals(p.getSelected()) &&	
+//				this.getPrice().equals(p.getPrice()) &&	
+//				this.getGw().equals(p.getGw())
+				
 		) {
 			return true;
 		}

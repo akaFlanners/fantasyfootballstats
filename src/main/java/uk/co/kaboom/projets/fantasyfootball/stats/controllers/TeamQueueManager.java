@@ -9,6 +9,7 @@ import uk.co.kaboom.projets.fantasyfootball.stats.model.Team;
 /**
  * Singleton to manage Queue of teams.
  * Teams come from the teams Enum and are pushed to queue on instantiation, popped off as allocated and completed.
+ * Only this enum manages the teams so it is performing the synchronization.
  * @author FlannersAdmin
  *
  */

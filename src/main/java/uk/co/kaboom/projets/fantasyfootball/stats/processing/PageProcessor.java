@@ -63,7 +63,7 @@ public class PageProcessor implements IPageProcessor {
 		
 		for(int i=1; i<=numOfRows; i++) {
 
-			Player p              = pm.generateScrapedPlayer(driver, i);
+			Player p              = pm.generateScrapedPlayerWithoutChecks(driver, i);
 			Player existingPlayer = playerDataMap.get(p.getPlayerIndex()); //Lookup player by index
 			
 			try {

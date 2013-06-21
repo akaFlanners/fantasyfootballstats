@@ -32,32 +32,6 @@ public class ScrapingControllerBuilderMock implements IScrapingControllerBuilder
 	public Map<String, String> sortSelectionMap = new HashMap<String, String>();
 	public Map<String, String> viewSelectionMap = new HashMap<String, String>();
 	
-	/**
-	 * @see uk.co.kaboom.projets.fantasyfootball.stats.controllers.IScrapingControllerBuilder#build()
-	 */
-//	@Override
-//	public ScrapingController build(WebDriver driver) {
-//		IControllerUI controlUI = new ControlUI(viewSelectionMap, sortSelectionMap, driver);
-//		controlUI.populateViewSelectionMap();
-//		controlUI.populateSortSelectionMap();
-//		return new ScrapingController(controlUI, pageProcessor);
-//	}
-	
-//	@Override
-//	public ArrayList<IScrapingController> buildThreaded() {
-//		FirefoxUtil ffUtil = new FirefoxUtil();
-//		WebDriver driver = new FirefoxDriver(ffUtil.getBinary(), ffUtil.getProfile());
-//		driver.get("http://fantasy.premierleague.com/stats/elements/");
-//		
-//		IControllerUI controlUI = new ControlUI(viewSelectionMap, sortSelectionMap, driver);
-//		controlUI.populateViewSelectionMap();
-//		controlUI.populateSortSelectionMap();
-//		IScrapingController sc  = new ScrapingController(controlUI, pageProcessor);
-//		ArrayList<IScrapingController> scrapers = new ArrayList<>();
-//		scrapers.add(sc);
-//		return scrapers;
-//	}
-	
 	public synchronized IScrapingController getThreadedInstance(Team team) {
 		WebDriver driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.FIREFOX);
 		driver.get("http://fantasy.premierleague.com/stats/elements/");
