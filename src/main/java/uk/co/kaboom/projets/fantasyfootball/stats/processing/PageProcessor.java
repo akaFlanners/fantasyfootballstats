@@ -14,85 +14,85 @@ import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerManager;
 import uk.co.kaboom.projets.fantasyfootball.stats.ui.IControllerUI;
 
 public class PageProcessor implements IPageProcessor {
-	
-	private static final Logger logger = LoggerFactory.getLogger(PageProcessor.class);
-	
-	private static Map<String, Player> playerDataMap;
-	private WebDriver driver;
-	private IControllerUI controlUI;
-	
-	public PageProcessor(Map<String, Player> playerDataMap, WebDriver driver, IControllerUI controlUI) {
-		if(PageProcessor.playerDataMap == null) {
-			PageProcessor.playerDataMap = playerDataMap;
-		}
-		this.driver = driver;
-		this.controlUI = controlUI;
-	}
-	
-	/**
-	 * Run an additional captureInitialData() on first process passthrough of all players.
-	 * This puts the player in the map, prior to adding the sortKey stat.
-	 */
-	public void process(String viewKey, String sortKey) {
-		logger.debug("process");
-		controlUI.updateData2(viewKey, sortKey);
-		captureInitialData();                      //We run this additional step of adding the player into the map on the fist pass through.
-		processRetrievedData(sortKey);
-	}
-	
-	public void process2(String viewKey, String sortKey) {
-		logger.debug("process2");
-		controlUI.updateData2(viewKey, sortKey);
-		
-		processRetrievedData(sortKey);
-	}
-	
-	private void captureInitialData() {
-			PlayerManager pm = new PlayerManager();
-			int numOfRows = driver.findElements(By.xpath("//*[@id='ism']/section[1]/table/tbody/tr")).size();
-			
-			for(int i=1; i<=numOfRows; i++) {
-				Player p = pm.generateScrapedPlayer(driver, i);
-				playerDataMap.put(p.getPlayerIndex(), p);  //Difference between methods is here - we need to put the player in the map 
-			}
-	}
-	
-	private void processRetrievedData(String sortKey) {
-		PlayerManager pm = new PlayerManager();
-		int numOfRows = driver.findElements(By.xpath("//*[@id='ism']/section[1]/table/tbody/tr")).size();
-		
-		for(int i=1; i<=numOfRows; i++) {
 
-			Player p              = pm.generateScrapedPlayerWithoutChecks(driver, i);
-			Player existingPlayer = playerDataMap.get(p.getPlayerIndex()); //Lookup player by index
-			
-			try {
-				pm.updatePlayer(p, driver, i, existingPlayer, sortKey);
-			}
-			catch (PlayerStatNotFoundException e) {
-				logger.warn(e.getMessage());
-				e.printStackTrace();
-			}
-			catch(NoSuchElementException e) {
-				logger.warn("NoSuchElementException on: " + sortKey);
-			}
-		}
-	}
+     private static final Logger LOG = LoggerFactory.getLogger(PageProcessor.class);
 
-	public static Map<String, Player> getPlayerDataMap() {
-		return playerDataMap;
-	}
+     private static Map<String, Player> playerDataMap;
+     private WebDriver driver;
+     private IControllerUI controlUI;
 
-	public String getDataToPersist() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(Player.getHeaders());
-		
-		for (Map.Entry<String, Player> entry : getPlayerDataMap().entrySet()) {
-		    Player player = entry.getValue();
-		    sb.append(player.getData());
-		}
-		
-		return sb.toString();
-	}
-	
+     public PageProcessor(final Map<String, Player> playerDataMap, final WebDriver driver, final IControllerUI controlUI) {
+          if(PageProcessor.playerDataMap == null) {
+               PageProcessor.playerDataMap = playerDataMap;
+          }
+          this.driver = driver;
+          this.controlUI = controlUI;
+     }
+
+     /**
+      * Run an additional captureInitialData() on first process passthrough of all players.
+      * This puts the player in the map, prior to adding the sortKey stat.
+      */
+     public void process(final String viewKey, final String sortKey) {
+          LOG.debug("process");
+          controlUI.updateData2(viewKey, sortKey);
+          captureInitialData();                      //We run this additional step of adding the player into the map on the fist pass through.
+          processRetrievedData(sortKey);
+     }
+
+     public void process2(final String viewKey, final String sortKey) {
+          LOG.debug("process2");
+          controlUI.updateData2(viewKey, sortKey);
+
+          processRetrievedData(sortKey);
+     }
+
+     private void captureInitialData() {
+               PlayerManager pm = new PlayerManager();
+               int numOfRows = driver.findElements(By.xpath("//*[@id='ism']/section[1]/table/tbody/tr")).size();
+
+               for(int i=1; i<=numOfRows; i++) {
+                    Player p = pm.generateScrapedPlayer(driver, i);
+                    playerDataMap.put(p.getPlayerIndex(), p);  //Difference between methods is here - we need to put the player in the map.
+               }
+     }
+
+     private void processRetrievedData(final String sortKey) {
+          PlayerManager pm = new PlayerManager();
+          int numOfRows = driver.findElements(By.xpath("//*[@id='ism']/section[1]/table/tbody/tr")).size();
+
+          for(int i=1; i<=numOfRows; i++) {
+
+               Player p              = pm.generateScrapedPlayerWithoutChecks(driver, i);
+               Player existingPlayer = playerDataMap.get(p.getPlayerIndex()); //Lookup player by index
+
+               try {
+                    pm.updatePlayer(p, driver, i, existingPlayer, sortKey);
+               }
+               catch (PlayerStatNotFoundException e) {
+                    LOG.warn(e.getMessage());
+                    e.printStackTrace();
+               }
+               catch(NoSuchElementException e) {
+                    LOG.warn("NoSuchElementException on: " + sortKey);
+               }
+          }
+     }
+
+     public static Map<String, Player> getPlayerDataMap() {
+          return playerDataMap;
+     }
+
+     public String getDataToPersist() {
+          StringBuilder sb = new StringBuilder();
+          sb.append(Player.getHeaders());
+
+          for (Map.Entry<String, Player> entry : getPlayerDataMap().entrySet()) {
+              Player player = entry.getValue();
+              sb.append(player.getData());
+          }
+
+          return sb.toString();
+     }
+
 }

@@ -24,27 +24,27 @@ import uk.co.kaboom.projets.fantasyfootball.stats.ui.IControllerUI;
  *
  */
 public class ScrapingControllerBuilderMock implements IScrapingControllerBuilder {
-	
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ScrapingControllerBuilderMock.class);
-	
-	public PageProcessorMock pageProcessor = new PageProcessorMock();
-	public Map<String, String> sortSelectionMap = new HashMap<String, String>();
-	public Map<String, String> viewSelectionMap = new HashMap<String, String>();
-	
-	public synchronized IScrapingController getThreadedInstance(Team team) {
-		WebDriver driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.FIREFOX);
-		driver.get("http://fantasy.premierleague.com/stats/elements/");
-		
-		IControllerUI controlUI = new ControlUI(viewSelectionMap, sortSelectionMap, driver);
-		
-		controlUI.populateViewSelectionMap();
-		controlUI.populateSortSelectionMap();
-		pageProcessor = new PageProcessorMock();
-		PersistenceManager pm = new PersistenceManager("output/fantasyfootball-test-ScrapingControllerMock.csv");
-		
-		IScrapingController sc = new ScrapingController(controlUI, pageProcessor, team, pm);
-		return sc;
-	}
+
+     @SuppressWarnings("unused")
+     private static final Logger logger = LoggerFactory.getLogger(ScrapingControllerBuilderMock.class);
+
+     public PageProcessorMock pageProcessor = new PageProcessorMock();
+     public Map<String, String> sortSelectionMap = new HashMap<String, String>();
+     public Map<String, String> viewSelectionMap = new HashMap<String, String>();
+
+     public synchronized IScrapingController getThreadedInstance(Team team) {
+          WebDriver driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.FIREFOX);
+          driver.get("http://fantasy.premierleague.com/stats/elements/");
+
+          IControllerUI controlUI = new ControlUI(viewSelectionMap, sortSelectionMap, driver);
+
+          controlUI.populateViewSelectionMap();
+          controlUI.populateSortSelectionMap();
+          pageProcessor = new PageProcessorMock();
+          PersistenceManager pm = new PersistenceManager("output/fantasyfootball-test-ScrapingControllerMock.csv");
+
+          IScrapingController sc = new ScrapingController(controlUI, pageProcessor, team, pm);
+          return sc;
+     }
 
 }

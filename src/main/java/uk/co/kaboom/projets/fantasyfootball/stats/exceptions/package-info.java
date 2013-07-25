@@ -1,5 +1,5 @@
 /**
- * Package to hold all Exception Classes
+ * Package to hold all Exception Classes.
  * @author FlannersAdmin
  *
  */

@@ -8,18 +8,18 @@ import org.junit.runners.Suite.SuiteClasses;
  * This class suffixed with "Tests" rather than "Test" - prevents SureFire from running everything twice.
  *  Alternative would be to change naming conventions NOT to use Test in each individual Test.
  *  or to exclude them in surefire config.
- *  
+ *
  *  For further details see:
  *  http://maven.apache.org/surefire/maven-surefire-plugin/examples/inclusion-exclusion.html
- *  
+ *
  * @author Mark Flanagan
  *
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	TestScrapingController.class,
-	TestPlayerData.class,
-	TestPersistence.class
+     TestScrapingController.class,
+     TestPlayerData.class,
+     TestPersistence.class
 })
 public class AllTests {
 

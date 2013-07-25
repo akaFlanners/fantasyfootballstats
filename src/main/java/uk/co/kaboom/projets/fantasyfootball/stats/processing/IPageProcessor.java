@@ -2,8 +2,8 @@ package uk.co.kaboom.projets.fantasyfootball.stats.processing;
 
 public interface IPageProcessor {
 
-	public abstract void process(String viewKey, String sortKey);
-	public abstract void process2(String viewKey, String sortKey);
-	public String getDataToPersist();
+     public abstract void process(final String viewKey, final String sortKey);
+     public abstract void process2(final String viewKey, final String sortKey);
+     public String getDataToPersist();
 
 }

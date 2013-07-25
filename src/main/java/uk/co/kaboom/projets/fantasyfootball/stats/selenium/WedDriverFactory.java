@@ -9,28 +9,28 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 
 public class WedDriverFactory {
-	public static enum BROWSER {FIREFOX, CHROME};
-	
-	public static synchronized WebDriver getDriver(BROWSER browser) {
-		if(browser.equals(BROWSER.CHROME)) {
-			return getChromeDriver();
-		}
-		else {
-			return getFirefoxDriver();
-		}
-	}
+     public static enum BROWSER {FIREFOX, CHROME};
 
-	private static  WebDriver getFirefoxDriver() {
-		FirefoxUtil ffUtil = new FirefoxUtil();
-		WebDriver driver = new FirefoxDriver(ffUtil.getBinary(), ffUtil.getProfile());
-		return driver;
-	}
-	
-	private static  WebDriver getChromeDriver() {
-	    DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-	    capabilities.setCapability("chrome.switches", Arrays.asList("--silent"));
-	    WebDriver driver = new ChromeDriver(capabilities);
-		return driver;
-	}
-	
+     public static synchronized WebDriver getDriver(final BROWSER browser) {
+          if(browser.equals(BROWSER.CHROME)) {
+               return getChromeDriver();
+          }
+          else {
+               return getFirefoxDriver();
+          }
+     }
+
+     private static  WebDriver getFirefoxDriver() {
+          FirefoxUtil ffUtil = new FirefoxUtil();
+          WebDriver driver = new FirefoxDriver(ffUtil.getBinary(), ffUtil.getProfile());
+          return driver;
+     }
+
+     private static  WebDriver getChromeDriver() {
+         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+         capabilities.setCapability("chrome.switches", Arrays.asList("--silent"));
+         WebDriver driver = new ChromeDriver(capabilities);
+          return driver;
+     }
+
 }

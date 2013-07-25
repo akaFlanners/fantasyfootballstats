@@ -4,9 +4,9 @@ import uk.co.kaboom.projets.fantasyfootball.stats.model.Team;
 
 public interface IScrapingController extends Runnable {
 
-	public void scrape();
+     public void scrape();
 
-	public void run();
-	public Team getTeam();
+     public void run();
+     public Team getTeam();
 
 }

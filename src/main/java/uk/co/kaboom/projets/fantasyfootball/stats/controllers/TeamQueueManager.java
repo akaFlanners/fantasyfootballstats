@@ -14,24 +14,24 @@ import uk.co.kaboom.projets.fantasyfootball.stats.model.Team;
  *
  */
 public enum TeamQueueManager {
-	INSTANCE;
-	
-	private Set<Team> waitingQueue    = Collections.synchronizedSet(EnumSet.allOf(Team.class));
-	private Set<Team> processingQueue = Collections.synchronizedSet(EnumSet.noneOf(Team.class));
-	private Set<Team> completedQueue  = Collections.synchronizedSet(EnumSet.noneOf(Team.class));
-	
-	/**
-	 * Change state of this team from waiting to processing. i.e. allocated to a thread
-	 * @return
-	 */
+     INSTANCE;
+
+     private Set<Team> waitingQueue    = Collections.synchronizedSet(EnumSet.allOf(Team.class));
+     private Set<Team> processingQueue = Collections.synchronizedSet(EnumSet.noneOf(Team.class));
+     private Set<Team> completedQueue  = Collections.synchronizedSet(EnumSet.noneOf(Team.class));
+
+     /**
+      * Change state of this team from waiting to processing. i.e. allocated to a thread
+      * @return team
+      */
     public synchronized Team getNext() {
-    	if(waitingQueue.iterator().hasNext()) {
-    		Team team = waitingQueue.iterator().next();
-    		waitingQueue.remove(team);
-    		processingQueue.add(team);
-    		return team;
-    	}
-    	return null;
+         if (waitingQueue.iterator().hasNext()) {
+              Team team = waitingQueue.iterator().next();
+              waitingQueue.remove(team);
+              processingQueue.add(team);
+              return team;
+         }
+         return null;
     }
 
     /**
@@ -40,16 +40,15 @@ public enum TeamQueueManager {
      * @param team
      * @return boolean indicating if this was the last team.
      */
-    public synchronized boolean completed(Team team) {
-    	processingQueue.remove(team);
-    	completedQueue.add(team);
+    public synchronized boolean completed(final Team team) {
+         processingQueue.remove(team);
+         completedQueue.add(team);
 
-    	if(completedQueue.size() == Team.values().length) {
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}
+         if (completedQueue.size() == Team.values().length) {
+              return true;
+         }
+
+         return false;
     }
-     
+
 }
