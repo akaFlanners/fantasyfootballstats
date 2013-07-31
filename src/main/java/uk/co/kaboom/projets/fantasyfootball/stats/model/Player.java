@@ -1,15 +1,20 @@
 package uk.co.kaboom.projets.fantasyfootball.stats.model;
 
+import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import uk.co.kaboom.projets.fantasyfootball.stats.exceptions.PlayerStatNotFoundException;
 
 public class Player {
 
      @SuppressWarnings("unused")
      private static final Logger LOG = LoggerFactory.getLogger(Player.class);
 
+     private Map<PlayerStat, String> playerStatMap = new EnumMap<>(PlayerStat.class);
+
+     /*
      private String playerIndex;
      private String player;
      private String team;
@@ -31,6 +36,7 @@ public class Player {
      private String saves;
      private String bonus;
      private String eaSportsPPI;
+     private String bonusPointsSystem; 
      private String form;
      private String timesInDreamTeam;
      private String valueForm;
@@ -171,6 +177,12 @@ public class Player {
      public final void setEaSportsPPI(String eaSportsPPI) {
           this.eaSportsPPI = eaSportsPPI;
      }
+     public String getBonusPointsSystem() {
+          return bonusPointsSystem;
+     }
+     public void setBonusPointsSystem(String bonusPointsSystem) {
+          this.bonusPointsSystem = bonusPointsSystem;
+     }
      public final String getForm() {
           return form;
      }
@@ -249,6 +261,7 @@ public class Player {
      public final void setPriceFallRound(String priceFallRound) {
           this.priceFallRound = priceFallRound;
      }
+*/
 
      /**
       * This only matches on the stats that are present on every page.
@@ -260,21 +273,31 @@ public class Player {
       */
      public final boolean isMatch(final Player p) {
           if(
-                  this.getPlayerIndex().equals(p.getPlayerIndex())
+                  this.find(PlayerStat.PLAYER_INDEX).equals(p.find(PlayerStat.PLAYER_INDEX))
                   &&
-                  this.getPlayer().equals(p.getPlayer())
+                  this.find(PlayerStat.PLAYER).equals(p.find(PlayerStat.PLAYER))
           ) {
                return true;
           }
 
           return false;
      }
+     
+     public final String find(PlayerStat stat) {
+         String value = playerStatMap.get(stat);
+         return value;
+     }
+     
 
      /*
       * Generally considered bad practice to use large switch statements like this.
       * However it was my first chance to try String based switches ... so I took it.
       */
-     public final void setDynamicValue(final String key, final String value) throws PlayerStatNotFoundException {
+     public final void setDynamicValue(final PlayerStat statKey, final String value) {
+         
+         playerStatMap.put(statKey, value);
+         
+         /*
           switch (key) {
                case "totalScore": this.setTotalScore(value); break;
                case "price": this.setPrice(value); break;
@@ -291,6 +314,7 @@ public class Player {
                case "saves": this.setSaves(value); break;
                case "bonus": this.setBonus(value); break;
                case "eaSportsPPI": this.setEaSportsPPI(value); break;
+               case "bonusPointsSystem": this.setBonusPointsSystem(value); break;
                case "form": this.setForm(value); break;
                case "timesInDreamTeam": this.setTimesInDreamTeam(value); break;
                case "valueForm": this.setValueForm(value); break;
@@ -306,46 +330,90 @@ public class Player {
                case "priceFallRound": this.setPriceFallRound(value); break;
                default: throw new PlayerStatNotFoundException("ERROR: Found unknown statId: " + key);
           }
+          */
      }
 
      public static final String getHeaders() {
           StringBuilder sb = new StringBuilder();
 
-          sb.append("Assists");
-          sb.append("\t Bonus");
-          sb.append("\t Clean Sheets");
-          sb.append("\t EA Sports PPI");
-          sb.append("\t Form");
-          sb.append("\t Goals Conceeded");
-          sb.append("\t Goals Scored");
-          sb.append("\t GW");
-          sb.append("\t Minutes Played");
-          sb.append("\t Own Goals");
-          sb.append("\t Penalties Missed");
-          sb.append("\t Penalties Saved");
-          sb.append("\t Player");
-          sb.append("\t Player Index");
-          sb.append("\t Points Per Game");
-          sb.append("\t Pos");
-          sb.append("\t Price");
-          sb.append("\t Price Fall");
-          sb.append("\t Price Fall Round");
-          sb.append("\t Price Rise");
-          sb.append("\t Price Rise Round");
-          sb.append("\t Red Cards");
-          sb.append("\t Saves");
-          sb.append("\t Selected");
-          sb.append("\t Team");
-          sb.append("\t Times In Dream Team");
-          sb.append("\t Total Score");
-          sb.append("\t Transfers In");
-          sb.append("\t Transfers In Round");
-          sb.append("\t Transfers Out");
-          sb.append("\t Transfers Out Round");
-          sb.append("\t Value Form");
-          sb.append("\t Value Season");
-          sb.append("\t Yellow Cards");
+          for (PlayerStat playerStat :PlayerStat.values()) {
+              sb.append(playerStat.getDropdownText());
+              sb.append("\t");
+          }
 
+          /*
+          sb.append(PlayerStat.ASSISTS);
+          sb.append("\t");
+          sb.append(PlayerStat.BONUS);
+          sb.append("\t");
+          sb.append(PlayerStat.BONUS_POINTS_SYS);
+          sb.append("\t");
+          sb.append(PlayerStat.CLEAN_SHEETS);
+          sb.append("\t");
+          sb.append(PlayerStat.EA_SPORTS_PPI);
+          sb.append("\t");
+          sb.append(PlayerStat.FORM);
+          sb.append("\t");
+          sb.append(PlayerStat.GOALS_CONCEDED);
+          sb.append("\t");
+          sb.append(PlayerStat.GOALS_SCORED);
+          sb.append("\t");
+          sb.append(PlayerStat.GW);
+          sb.append("\t");
+          sb.append(PlayerStat.MINUTES_PLAYED);
+          sb.append("\t");
+          sb.append(PlayerStat.OWN_GOALS);
+          sb.append("\t");
+          sb.append(PlayerStat.PENALTIES_MISSED);
+          sb.append("\t");
+          sb.append(PlayerStat.PENALTIES_SAVED);
+          sb.append("\t");
+          sb.append(PlayerStat.PLAYER);
+          sb.append("\t");
+          sb.append(PlayerStat.PLAYER_INDEX);
+          sb.append("\t");
+          sb.append(PlayerStat.POINTS_PER_GAME);
+          sb.append("\t");
+          sb.append(PlayerStat.POS);
+          sb.append("\t");
+          sb.append(PlayerStat.PRICE);
+          sb.append("\t");
+          sb.append(PlayerStat.PRICE_FALL);
+          sb.append("\t");
+          sb.append(PlayerStat.PRICE_FALL_ROUND);
+          sb.append("\t");
+          sb.append(PlayerStat.PRICE_RISE);
+          sb.append("\t");
+          sb.append(PlayerStat.PRICE_RISE_ROUND);
+          sb.append("\t");
+          sb.append(PlayerStat.RED_CARDS);
+          sb.append("\t");
+          sb.append(PlayerStat.SAVES);
+          sb.append("\t");
+          sb.append(PlayerStat.SELECTED);
+          sb.append("\t");
+          sb.append(PlayerStat.TEAM);
+          sb.append("\t");
+          sb.append(PlayerStat.TIMES_IN_DREAM_TEAM);
+          sb.append("\t");
+          sb.append(PlayerStat.TOTAL_SCORE);
+          sb.append("\t");
+          sb.append(PlayerStat.TRANSFERS_IN);
+          sb.append("\t");
+          sb.append(PlayerStat.TRANSFERS_IN_ROUND);
+          sb.append("\t");
+          sb.append(PlayerStat.TRANSFERS_OUT);
+          sb.append("\t");
+          sb.append(PlayerStat.TRANSFERS_OUT_ROUND);
+          sb.append("\t");
+          sb.append(PlayerStat.VALUE_FORM);
+          sb.append("\t");
+          sb.append(PlayerStat.VALUE_SEASON);
+          sb.append("\t");
+          sb.append(PlayerStat.YELLOW_CARDS);
+          sb.append("\t"); //Remove 
+          */
+          
           sb.append(System.getProperty("line.separator"));
 
           return sb.toString();
@@ -353,11 +421,27 @@ public class Player {
 
      public final String getData() {
           StringBuilder sb = new StringBuilder();
+          
+          Iterator<PlayerStat> enumKeySet = playerStatMap.keySet().iterator();
+          while(enumKeySet.hasNext()){
+              PlayerStat currentStat = enumKeySet.next();
+              sb.append(playerStatMap.get(currentStat));
+              sb.append("\t");
+          }
+          //TODO: REMOVE LAST TAB
+  
+          
+        
+          
+          /*
           //sb.append("\t ");
           sb.append(getAssists());
 
           sb.append("\t ");
           sb.append(getBonus());
+          
+          sb.append("\t ");
+          sb.append(getBonusPointsSystem());
 
           sb.append("\t ");
           sb.append(getCleanSheets());
@@ -454,9 +538,9 @@ public class Player {
 
           sb.append("\t ");
           sb.append(getYellowCards());
-
+*/
           sb.append(System.getProperty("line.separator"));
-
+          
           return sb.toString();
      }
 

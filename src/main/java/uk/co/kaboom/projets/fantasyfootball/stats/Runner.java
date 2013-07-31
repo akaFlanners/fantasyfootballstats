@@ -23,7 +23,7 @@ public final class Runner {
           final int numOfThreads = 3;
 
           if (System.getenv("FIREFOX_HOME") != null) {
-              IScrapingControllerBuilder scb = new ScrapingControllerBuilder();
+             IScrapingControllerBuilder scb = new ScrapingControllerBuilder();
              CollectionThreadSpawner cts = new CollectionThreadSpawner();
              cts.setupThreads(scb, numOfThreads);
           }

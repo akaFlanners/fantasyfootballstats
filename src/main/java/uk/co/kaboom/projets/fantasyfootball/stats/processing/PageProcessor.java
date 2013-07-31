@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import uk.co.kaboom.projets.fantasyfootball.stats.exceptions.PlayerStatNotFoundException;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.Player;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerManager;
+import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
 import uk.co.kaboom.projets.fantasyfootball.stats.ui.IControllerUI;
 
 public class PageProcessor implements IPageProcessor {
@@ -33,18 +34,18 @@ public class PageProcessor implements IPageProcessor {
       * Run an additional captureInitialData() on first process passthrough of all players.
       * This puts the player in the map, prior to adding the sortKey stat.
       */
-     public void process(final String viewKey, final String sortKey) {
+     public void process(final String viewKey, final PlayerStat stat) {
           LOG.debug("process");
-          controlUI.updateData2(viewKey, sortKey);
+          controlUI.updateData2(viewKey, stat);
           captureInitialData();                      //We run this additional step of adding the player into the map on the fist pass through.
-          processRetrievedData(sortKey);
+          processRetrievedData(stat);
      }
 
-     public void process2(final String viewKey, final String sortKey) {
+     public void process2(final String viewKey, final PlayerStat stat) {
           LOG.debug("process2");
-          controlUI.updateData2(viewKey, sortKey);
+          controlUI.updateData2(viewKey, stat);
 
-          processRetrievedData(sortKey);
+          processRetrievedData(stat);
      }
 
      private void captureInitialData() {
@@ -53,28 +54,28 @@ public class PageProcessor implements IPageProcessor {
 
                for(int i=1; i<=numOfRows; i++) {
                     Player p = pm.generateScrapedPlayer(driver, i);
-                    playerDataMap.put(p.getPlayerIndex(), p);  //Difference between methods is here - we need to put the player in the map.
+                    playerDataMap.put(p.find(PlayerStat.PLAYER_INDEX), p);  //Difference between methods is here - we need to put the player in the map.
                }
      }
 
-     private void processRetrievedData(final String sortKey) {
+     private void processRetrievedData(final PlayerStat stat) {
           PlayerManager pm = new PlayerManager();
           int numOfRows = driver.findElements(By.xpath("//*[@id='ism']/section[1]/table/tbody/tr")).size();
 
           for(int i=1; i<=numOfRows; i++) {
 
                Player p              = pm.generateScrapedPlayerWithoutChecks(driver, i);
-               Player existingPlayer = playerDataMap.get(p.getPlayerIndex()); //Lookup player by index
+               Player existingPlayer = playerDataMap.get(p.find(PlayerStat.PLAYER_INDEX)); //Lookup player by index
 
                try {
-                    pm.updatePlayer(p, driver, i, existingPlayer, sortKey);
+                    pm.updatePlayer(p, driver, i, existingPlayer, stat);
                }
                catch (PlayerStatNotFoundException e) {
                     LOG.warn(e.getMessage());
                     e.printStackTrace();
                }
                catch(NoSuchElementException e) {
-                    LOG.warn("NoSuchElementException on: " + sortKey);
+                    LOG.warn("NoSuchElementException on: " + stat.getStatName());
                }
           }
      }

@@ -1,5 +1,6 @@
 package uk.co.kaboom.projets.fantasyfootball.stats.ui;
 
+import java.util.EnumSet;
 import java.util.Map;
 
 import org.openqa.selenium.By;
@@ -23,19 +24,19 @@ public class ControlUI implements IControllerUI {
 
      private WebDriver driver;
      private Map<String, String> viewSelectionMap;
-     private Map<String, String> sortSelectionMap;
-     private SelectboxHandler viewSelectbox;
-     private SelectboxHandler sortSelectbox;
+     private EnumSet<PlayerStat> playerStats;
+     private SelectboxTeamHandler viewSelectbox;
+     private SelectboxStatHandler sortSelectbox;
 
      public ControlUI(
                       final Map<String, String> viewSelectionMap, 
-                      final Map<String, String> sortSelectionMap, 
+                      final EnumSet<PlayerStat> sortSelectionMap, 
     		          final WebDriver driver
      ){
           this.viewSelectionMap = viewSelectionMap;
-          this.sortSelectionMap = sortSelectionMap;
-          this.viewSelectbox = new SelectboxHandler(viewSelectionMap, "id_element_filter", driver);
-          this.sortSelectbox = new SelectboxHandler(sortSelectionMap, "id_stat_filter", driver);
+          this.playerStats = sortSelectionMap;
+          this.viewSelectbox = new SelectboxTeamHandler(viewSelectionMap, "id_element_filter", driver);
+          this.sortSelectbox = new SelectboxStatHandler(playerStats, "id_stat_filter", driver);
           this.driver = driver;
      }
 
@@ -56,9 +57,9 @@ public class ControlUI implements IControllerUI {
       */
      @Override
      public void populateSortSelectionMap() {
-          for (PlayerStat playerstat : PlayerStat.values()) {
-               if(playerstat.isDropDownDelection()) {
-                    sortSelectionMap.put(playerstat.getStatName(), playerstat.getDropdownText());
+          for (PlayerStat playerStat : PlayerStat.values()) {
+               if(!playerStat.isDropDownDelection()) {
+                    playerStats.remove(playerStat);
                }
           }
       }
@@ -69,15 +70,15 @@ public class ControlUI implements IControllerUI {
       }
 
      @Override
-     public Map<String, String> getSortSelectionMap() {
-           return sortSelectionMap;
+     public EnumSet<PlayerStat> getSortSelectionMap() {
+           return playerStats;
       }
 
-     public SelectboxHandler getViewSelectionHandler() {
+     public SelectboxTeamHandler getViewSelectionHandler() {
            return viewSelectbox;
       }
 
-     public SelectboxHandler getSortSelectionHandler() {
+     public SelectboxStatHandler getSortSelectionHandler() {
            return sortSelectbox;
       }
 
@@ -97,11 +98,11 @@ public class ControlUI implements IControllerUI {
           });
       }
 
-      public void updateData2(final String viewKey, final String sortKey) {
-           LOG.debug("updateData2: " + viewKey + " " + sortKey);
+      public void updateData2(final String viewKey, final PlayerStat stat) {
+           LOG.debug("updateData2: " + viewKey + " " + stat.getStatName());
            waitForFooterLogo(); //Due to first time in.
            LOG.debug("part2");
-           sortSelectbox.selectOption(sortKey);
+           sortSelectbox.selectOption(stat);
            viewSelectbox.selectOption(viewKey);
            clickShow();
            waitForFooterLogo();

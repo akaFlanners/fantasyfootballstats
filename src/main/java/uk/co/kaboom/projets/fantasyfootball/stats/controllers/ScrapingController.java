@@ -1,13 +1,16 @@
 package uk.co.kaboom.projets.fantasyfootball.stats.controllers;
 
-import java.util.Map;
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 
+import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.Team;
 import uk.co.kaboom.projets.fantasyfootball.stats.persistence.PersistenceManager;
 import uk.co.kaboom.projets.fantasyfootball.stats.processing.IPageProcessor;
+import uk.co.kaboom.projets.fantasyfootball.stats.selenium.WedDriverFactory;
 import uk.co.kaboom.projets.fantasyfootball.stats.ui.IControllerUI;
 
 /**
@@ -20,11 +23,13 @@ import uk.co.kaboom.projets.fantasyfootball.stats.ui.IControllerUI;
 public class ScrapingController implements IScrapingController, Runnable {
 
      private static final Logger LOG = LoggerFactory.getLogger(ScrapingController.class);
+     private static final int MAX_FAILURES = 10;
 
-    private IControllerUI controlUI;
+     private IControllerUI controlUI;
      private IPageProcessor pageProcessor;
      private Team team = null;
      private PersistenceManager pm;
+     private int failureAttempts = 0;
 
      public ScrapingController(final IControllerUI controlUI, final IPageProcessor pageProcessor, final Team team, final PersistenceManager pm) {
           LOG.debug("Creating Scraping Controller");
@@ -40,8 +45,25 @@ public class ScrapingController implements IScrapingController, Runnable {
      @Override
      public final void scrape() {
           LOG.debug("scrape() for team " + this.getTeam());
-          iterate();
-          complete();
+          if(failureAttempts <= MAX_FAILURES) {
+              try {
+                  iterate();
+              }
+              catch(Exception e) {
+                  failureAttempts++;
+                  LOG.warn(e.getMessage() + " " + e.getStackTrace());
+                  System.out.println(e.getMessage() + " " + e.getStackTrace());
+                  WebDriver driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.FIREFOX);
+                  driver.get("http://fantasy.premierleague.com/stats/elements/");
+                  scrape();
+              }
+              complete();
+          }
+          else {
+              String msg = "Exceeded failure attempts with: " + team;
+              System.out.println(msg);
+              LOG.error(msg);
+          }
      }
 
      public final void complete() {
@@ -78,16 +100,16 @@ public class ScrapingController implements IScrapingController, Runnable {
 
           LOG.debug("iterate() for " + this.getTeam());
           int count = 0;
-          for (Map.Entry<String, String> sortEntry : controlUI.getSortSelectionMap().entrySet()) {
+          for (PlayerStat stat : controlUI.getSortSelectionMap()) {
                count++;
 
-               LOG.debug("Iterating, count (" + count + ") " + team + " : " + sortEntry.getKey());
+               LOG.debug("Iterating, count (" + count + ") " + team + " : " + stat.getStatName());
 
                if (count==1) {
-                    pageProcessor.process(team.getDropdownSelection(), sortEntry.getKey());
+                    pageProcessor.process(team.getDropdownSelection(), stat);
                }
                else {
-                    pageProcessor.process2(team.getDropdownSelection(), sortEntry.getKey());
+                    pageProcessor.process2(team.getDropdownSelection(), stat);
                }
           }
 

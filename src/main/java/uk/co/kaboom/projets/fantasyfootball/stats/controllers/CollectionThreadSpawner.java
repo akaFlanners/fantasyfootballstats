@@ -21,7 +21,7 @@ public class CollectionThreadSpawner {
                     IScrapingController scraper = builder.getThreadedInstance(team);
 
                     //Run start() scraper.
-                    Thread t = new Thread(scraper, "Thread " + scraper.getTeam());
+                    Thread t = new Thread(scraper, "Thread-" + i + "-" + scraper.getTeam());
                     t.start();
                }
                else {

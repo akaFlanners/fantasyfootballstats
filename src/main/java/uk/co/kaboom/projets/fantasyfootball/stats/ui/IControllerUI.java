@@ -1,8 +1,11 @@
 package uk.co.kaboom.projets.fantasyfootball.stats.ui;
 
+import java.util.EnumSet;
 import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
+
+import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
 
 public interface IControllerUI {
 
@@ -23,9 +26,9 @@ public interface IControllerUI {
 
      public abstract Map<String, String> getViewSelectionMap();
 
-     public abstract Map<String, String> getSortSelectionMap();
+     public abstract EnumSet<PlayerStat> getSortSelectionMap();
 
-     public void updateData2(final String viewKey, final String sortKey);
+     public void updateData2(final String viewKey, final PlayerStat stat);
 
      public void home();
 

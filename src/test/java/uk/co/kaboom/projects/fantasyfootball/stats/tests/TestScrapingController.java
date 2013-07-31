@@ -39,8 +39,8 @@ public class TestScrapingController {
      @Test
      public void test() {
           controller.scrape();
-          logger.debug("sortsize * viewsize: " + scb.sortSelectionMap.size() + " * " + scb.viewSelectionMap.size() + " = " + scb.sortSelectionMap.size() * scb.viewSelectionMap.size() + " matching loops: " + scb.pageProcessor.getCount());
-          assertEquals("Count of calls equal to the list counts multiplied", scb.sortSelectionMap.size() * scb.viewSelectionMap.size(), scb.pageProcessor.getCount());
+          logger.debug("sortsize * viewsize: " + scb.playerStats.size() + " * " + scb.viewSelectionMap.size() + " = " + scb.playerStats.size() * scb.viewSelectionMap.size() + " matching loops: " + scb.pageProcessor.getCount());
+          assertEquals("Count of calls equal to the list counts multiplied", scb.playerStats.size() * scb.viewSelectionMap.size(), scb.pageProcessor.getCount());
      }
 
 }

@@ -14,15 +14,15 @@ public class PlayerManager {
      public Player generateScrapedPlayer(WebDriver driver, int i) {
 
           Player p = new Player();
-
-          p.setPlayerIndex(driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[2]/a")).getAttribute("href").split("#")[1] );
-          p.setPlayer(     driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[3]")).getText() );
-          p.setTeam(       driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[4]")).getText() );
-          p.setPos(        driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[5]")).getText() );
-          p.setSelected(   driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[6]")).getText() );
-          p.setPrice(      driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[7]")).getText() );
-          p.setGw(         driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[8]")).getText() );
-          p.setTotalScore( driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[9]")).getText() );
+          
+          p.setDynamicValue(PlayerStat.PLAYER_INDEX,    driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[2]/a")).getAttribute("href").split("#")[1] );
+          p.setDynamicValue(PlayerStat.PLAYER,          driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[3]")).getText() );
+          p.setDynamicValue(PlayerStat.TEAM,            driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[4]")).getText() );
+          p.setDynamicValue(PlayerStat.POS,             driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[5]")).getText() );
+          p.setDynamicValue(PlayerStat.SELECTED,        driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[6]")).getText() );
+          p.setDynamicValue(PlayerStat.PRICE,           driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[7]")).getText() );
+          p.setDynamicValue(PlayerStat.GW,              driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[8]")).getText() );
+          p.setDynamicValue(PlayerStat.TOTAL_SCORE,     driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[9]")).getText() );
 
           return p;
      }
@@ -31,15 +31,15 @@ public class PlayerManager {
 
           Player p = new Player();
 
-          p.setPlayerIndex(driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[2]/a")).getAttribute("href").split("#")[1] );
-          p.setPlayer(     driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[3]")).getText() );
+          p.setDynamicValue(PlayerStat.PLAYER_INDEX, driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[2]/a")).getAttribute("href").split("#")[1] );
+          p.setDynamicValue(PlayerStat.PLAYER,       driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[3]")).getText() );
 
           return p;
      }
 
-     public boolean updatePlayer(Player p, WebDriver driver, int i,  Player existingPlayer, String statId) throws PlayerStatNotFoundException {
+     public boolean updatePlayer(Player p, WebDriver driver, int i,  Player existingPlayer, PlayerStat stat) throws PlayerStatNotFoundException {
           if (existingPlayer == null) {
-               LOG.debug("Null returned with:  \n" + p.getPlayerIndex());
+               LOG.debug("Null returned with:  \n" + p.find(PlayerStat.PLAYER_INDEX));
                LOG.debug("PlayerData (lookup): \n" + p.getData());
                return false;
           }
@@ -47,7 +47,7 @@ public class PlayerManager {
           //Double check player values match
           if (p.isMatch(existingPlayer)) {
                String dynamicValue = driver.findElement(By.xpath("//*[@id=\"ism\"]/section[1]/table/tbody/tr[" + i + "]/td[10]")).getText();
-               existingPlayer.setDynamicValue(statId, dynamicValue);
+               existingPlayer.setDynamicValue(stat, dynamicValue);
                return true;
           }
 

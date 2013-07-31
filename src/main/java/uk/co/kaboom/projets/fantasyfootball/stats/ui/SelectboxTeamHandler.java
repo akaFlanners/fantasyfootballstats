@@ -12,15 +12,15 @@ import org.slf4j.LoggerFactory;
  * Class to handle the selection of elements from a select dropdown.
  * @author FlannersAdmin
  */
-public class SelectboxHandler {
+public class SelectboxTeamHandler {
 
-     private static final Logger LOG = LoggerFactory.getLogger(SelectboxHandler.class);
+     private static final Logger LOG = LoggerFactory.getLogger(SelectboxTeamHandler.class);
 
      Map<String, String> selectionMap;
      String id;
      WebDriver driver;
 
-     public SelectboxHandler(final Map<String, String> selectionMap, final String id, final WebDriver driver) {
+     public SelectboxTeamHandler(final Map<String, String> selectionMap, final String id, final WebDriver driver) {
           this.selectionMap = selectionMap;
           this.id = id;
           this.driver = driver;

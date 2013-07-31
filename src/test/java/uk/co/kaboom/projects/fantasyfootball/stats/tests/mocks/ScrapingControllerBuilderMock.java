@@ -1,5 +1,6 @@
 package uk.co.kaboom.projects.fantasyfootball.stats.tests.mocks;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import uk.co.kaboom.projets.fantasyfootball.stats.controllers.IScrapingController;
 import uk.co.kaboom.projets.fantasyfootball.stats.controllers.IScrapingControllerBuilder;
 import uk.co.kaboom.projets.fantasyfootball.stats.controllers.ScrapingController;
+import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.Team;
 import uk.co.kaboom.projets.fantasyfootball.stats.persistence.PersistenceManager;
 import uk.co.kaboom.projets.fantasyfootball.stats.selenium.WedDriverFactory;
@@ -29,14 +31,14 @@ public class ScrapingControllerBuilderMock implements IScrapingControllerBuilder
      private static final Logger logger = LoggerFactory.getLogger(ScrapingControllerBuilderMock.class);
 
      public PageProcessorMock pageProcessor = new PageProcessorMock();
-     public Map<String, String> sortSelectionMap = new HashMap<String, String>();
+     public EnumSet<PlayerStat> playerStats = EnumSet.allOf(PlayerStat.class);
      public Map<String, String> viewSelectionMap = new HashMap<String, String>();
 
      public synchronized IScrapingController getThreadedInstance(Team team) {
           WebDriver driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.FIREFOX);
           driver.get("http://fantasy.premierleague.com/stats/elements/");
 
-          IControllerUI controlUI = new ControlUI(viewSelectionMap, sortSelectionMap, driver);
+          IControllerUI controlUI = new ControlUI(viewSelectionMap, playerStats, driver);
 
           controlUI.populateViewSelectionMap();
           controlUI.populateSortSelectionMap();

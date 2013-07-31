@@ -3,6 +3,7 @@ package uk.co.kaboom.projects.fantasyfootball.stats.tests.mocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
 import uk.co.kaboom.projets.fantasyfootball.stats.processing.IPageProcessor;
 
 /**
@@ -18,11 +19,13 @@ public class PageProcessorMock implements IPageProcessor {
      //Just used for testing
      int count = 0;
 
-     public void process(String viewKey, String sortKey) {
+     public void process(String viewKey, PlayerStat stat) {
+         System.out.println("viewkey = " + viewKey + ", sortKey = " + stat.getDropdownText());
           count++;
      }
 
-     public void process2(String viewKey, String sortKey) {
+     public void process2(String viewKey, PlayerStat stat) {
+         System.out.println("viewkey = " + viewKey + ", sortKey = " +  stat.getDropdownText());
           count++;
      }
 
