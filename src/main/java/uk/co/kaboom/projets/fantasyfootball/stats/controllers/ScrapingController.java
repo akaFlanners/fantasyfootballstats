@@ -1,7 +1,5 @@
 package uk.co.kaboom.projets.fantasyfootball.stats.controllers;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
-
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

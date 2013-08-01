@@ -17,7 +17,6 @@ import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
  */
 public class SelectboxStatHandler {
 
-     @SuppressWarnings("unused")
      private static final Logger LOG = LoggerFactory.getLogger(SelectboxStatHandler.class);
 
      EnumSet<PlayerStat> playerStats;
