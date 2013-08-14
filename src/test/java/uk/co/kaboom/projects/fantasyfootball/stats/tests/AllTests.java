@@ -19,7 +19,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
      TestScrapingController.class,
      TestPlayerData.class,
-     TestPersistence.class
+     TestPersistence.class,
+     TestHTMLElement.class
 })
 public class AllTests {
 

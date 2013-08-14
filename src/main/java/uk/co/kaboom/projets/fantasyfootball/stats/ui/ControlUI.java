@@ -35,8 +35,8 @@ public class ControlUI implements IControllerUI {
      ){
           this.viewSelectionMap = viewSelectionMap;
           this.playerStats = sortSelectionMap;
-          this.viewSelectbox = new SelectboxTeamHandler(viewSelectionMap, "id_element_filter", driver);
-          this.sortSelectbox = new SelectboxStatHandler(playerStats, "id_stat_filter", driver);
+          this.viewSelectbox = new SelectboxTeamHandler(viewSelectionMap, HTMLElement.VIEW_SELECTBOX.getName(), driver);
+          this.sortSelectbox = new SelectboxStatHandler(playerStats, HTMLElement.SORT_SELECTBOX.getName(), driver);
           this.driver = driver;
      }
 
@@ -86,26 +86,28 @@ public class ControlUI implements IControllerUI {
           return driver;
      }
 
-     public void waitForFooterLogo() {
+     public void waitForHTMLElement(final HTMLElement element) {
          int timeToWait = 50;
          Thread.yield();
          (new WebDriverWait(driver, timeToWait)).until(new ExpectedCondition<Boolean>() {
               public Boolean apply(final WebDriver d) {
-                  boolean isFooterLogoFound = driver.findElements(By.cssSelector("div.footerLogo")).size() > 0;
-                  LOG.debug("Returning from wait with: " + isFooterLogoFound);
-                  return isFooterLogoFound;
+                  boolean isFound = driver.findElements(By.cssSelector(element.getSelector())).size() > 0;
+                  LOG.debug("Returning from wait for: " + element.getName() + " with: " + isFound);
+                  return isFound;
               }
           });
       }
 
       public void updateData2(final String viewKey, final PlayerStat stat) {
            LOG.debug("updateData2: " + viewKey + " " + stat.getStatName());
-           waitForFooterLogo(); //Due to first time in.
+           waitForHTMLElement(HTMLElement.FOOTER);
+           waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
+           waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
            LOG.debug("part2");
            sortSelectbox.selectOption(stat);
            viewSelectbox.selectOption(viewKey);
            clickShow();
-           waitForFooterLogo();
+           waitForHTMLElement(HTMLElement.FOOTER);
       }
 
       public void home() {

@@ -21,6 +21,7 @@ import uk.co.kaboom.projets.fantasyfootball.stats.persistence.PersistenceManager
 import uk.co.kaboom.projets.fantasyfootball.stats.processing.PageProcessor;
 import uk.co.kaboom.projets.fantasyfootball.stats.selenium.WedDriverFactory;
 import uk.co.kaboom.projets.fantasyfootball.stats.ui.ControlUI;
+import uk.co.kaboom.projets.fantasyfootball.stats.ui.HTMLElement;
 
 public class TestPersistence {
 
@@ -73,7 +74,9 @@ public class TestPersistence {
           Select select;
           String actualText;
 
-          controlUI.waitForFooterLogo();
+          controlUI.waitForHTMLElement(HTMLElement.FOOTER);
+          controlUI.waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
+          controlUI.waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
           controlUI.getSortSelectionHandler().selectOption(PlayerStat.CLEAN_SHEETS);
 
 
@@ -83,7 +86,9 @@ public class TestPersistence {
 
           assertEquals("Expected Clean sheets: ", expectedText, actualText);
 
-          controlUI.waitForFooterLogo();
+          controlUI.waitForHTMLElement(HTMLElement.FOOTER);
+          controlUI.waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
+          controlUI.waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
           controlUI.getSortSelectionHandler().selectOption(PlayerStat.BONUS);
 
           expectedText = "Bonus";
@@ -93,7 +98,9 @@ public class TestPersistence {
           assertEquals("Expected Bonus: ", expectedText, actualText);
 
 
-          controlUI.waitForFooterLogo();
+          controlUI.waitForHTMLElement(HTMLElement.FOOTER);
+          controlUI.waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
+          controlUI.waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
           controlUI.getSortSelectionHandler().selectOption(PlayerStat.EA_SPORTS_PPI);
 
           expectedText = "EA SPORTS PPI";
@@ -117,7 +124,9 @@ public class TestPersistence {
           Select select;
           String actualText;
 
-          controlUI.waitForFooterLogo();
+          controlUI.waitForHTMLElement(HTMLElement.FOOTER);
+          controlUI.waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
+          controlUI.waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
           controlUI.getSortSelectionHandler().selectOption(PlayerStat.EA_SPORTS_PPI);
 
           expectedText = "EA SPORTS PPI";
@@ -126,7 +135,9 @@ public class TestPersistence {
 
           assertEquals("Expected EA SPORTS PPI: ", expectedText, actualText);
 
-          controlUI.waitForFooterLogo();
+          controlUI.waitForHTMLElement(HTMLElement.FOOTER);
+          controlUI.waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
+          controlUI.waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
           controlUI.getSortSelectionHandler().selectOption(PlayerStat.PLAYER_INDEX); //Attempt to select value that does not exist?
 
           //Drop-down should remain as it was.
