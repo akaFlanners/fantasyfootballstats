@@ -2,7 +2,8 @@ package uk.co.kaboom.projets.fantasyfootball.stats.ui;
 
 public enum HTMLElementType {
     DIV("div", "."),
-    SELECT("select", "#");
+    SELECT("select", "#"),
+    INPUT("input", ".");
     
     private final String type;
     private final String cssSelectorSymbol;

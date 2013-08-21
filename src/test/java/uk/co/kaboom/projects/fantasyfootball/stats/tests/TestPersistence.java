@@ -64,6 +64,8 @@ public class TestPersistence {
      /**
       * Selects a drop-down 3 times.
       * Confirms that the correct drop-down is selected.
+      * TODO: Refactor a method in ControlUI to JUST perform waiting for all the elements on the page - DRY principle.
+      * TODO: Consider making location of the page a constant.
       */
      @Test
      public void testUpdateDataWithGoodData() {
@@ -77,6 +79,7 @@ public class TestPersistence {
           controlUI.waitForHTMLElement(HTMLElement.FOOTER);
           controlUI.waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
           controlUI.waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
+          controlUI.waitForHTMLElement(HTMLElement.INPUT_SUBMIT);
           controlUI.getSortSelectionHandler().selectOption(PlayerStat.CLEAN_SHEETS);
 
 
@@ -89,6 +92,7 @@ public class TestPersistence {
           controlUI.waitForHTMLElement(HTMLElement.FOOTER);
           controlUI.waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
           controlUI.waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
+          controlUI.waitForHTMLElement(HTMLElement.INPUT_SUBMIT);
           controlUI.getSortSelectionHandler().selectOption(PlayerStat.BONUS);
 
           expectedText = "Bonus";
@@ -101,6 +105,7 @@ public class TestPersistence {
           controlUI.waitForHTMLElement(HTMLElement.FOOTER);
           controlUI.waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
           controlUI.waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
+          controlUI.waitForHTMLElement(HTMLElement.INPUT_SUBMIT);
           controlUI.getSortSelectionHandler().selectOption(PlayerStat.EA_SPORTS_PPI);
 
           expectedText = "EA SPORTS PPI";

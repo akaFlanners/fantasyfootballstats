@@ -1,12 +1,14 @@
 package uk.co.kaboom.projets.fantasyfootball.stats.ui;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,11 +100,15 @@ public class ControlUI implements IControllerUI {
           });
       }
 
+      
+      //TODO: Refactor name and extract method for waiting. 
+      //TODO: Remove some logging
       public void updateData2(final String viewKey, final PlayerStat stat) {
            LOG.debug("updateData2: " + viewKey + " " + stat.getStatName());
            waitForHTMLElement(HTMLElement.FOOTER);
            waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
            waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
+           waitForHTMLElement(HTMLElement.INPUT_SUBMIT);
            LOG.debug("part2");
            sortSelectbox.selectOption(stat);
            viewSelectbox.selectOption(viewKey);
@@ -115,6 +121,24 @@ public class ControlUI implements IControllerUI {
       }
 
       public void clickShow() {
-           driver.findElement(By.xpath("/html/body/div[3]/div/div/div/section/form/input")).click();
+           try {
+               driver.findElement(By.xpath("/html/body/div[3]/div/div/div/section/form/input")).click();
+           }
+           catch (Exception e) {
+               LOG.warn("Exception thrown clicking Show Button - will attempt another method");
+               LOG.warn(e.getMessage());
+               try {
+                   List<WebElement> showButtonList = driver.findElements(By.cssSelector(HTMLElement.INPUT_SUBMIT.getSelector()));
+                   if(showButtonList != null && showButtonList.size() > 0) {
+                       LOG.debug("Found: " + showButtonList.size() + " SHOW Buttons");
+                       showButtonList.get(0).click();
+                   }
+               }
+               catch (Exception e2) {
+                   LOG.error("Exception thrown clicking Show Button using 2nd Method");
+                   LOG.error(e.getMessage());
+                   LOG.error("*** MAJOR ERROR GETTING SHOW BUTTON ***"); 
+               }
+           }
       }
 }

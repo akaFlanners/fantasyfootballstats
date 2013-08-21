@@ -3,7 +3,8 @@ package uk.co.kaboom.projets.fantasyfootball.stats.ui;
 public enum HTMLElement {
     FOOTER("footerLogo", HTMLElementType.DIV),
     VIEW_SELECTBOX("id_element_filter", HTMLElementType.SELECT),
-    SORT_SELECTBOX("id_stat_filter", HTMLElementType.SELECT);
+    SORT_SELECTBOX("id_stat_filter", HTMLElementType.SELECT),
+    INPUT_SUBMIT("ismSubmit", HTMLElementType.INPUT);
     
     private final String name;
     private final HTMLElementType type;
