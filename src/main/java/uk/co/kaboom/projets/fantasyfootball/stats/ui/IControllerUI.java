@@ -28,9 +28,7 @@ public interface IControllerUI {
 
      public abstract EnumSet<PlayerStat> getSortSelectionMap();
 
-     public void updateData2(final String viewKey, final PlayerStat stat);
-
-     public void home();
+     public void updateData(final String viewKey, final PlayerStat stat);
 
      public WebDriver getDriver();
 

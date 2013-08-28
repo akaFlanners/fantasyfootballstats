@@ -88,6 +88,11 @@ public class ControlUI implements IControllerUI {
           return driver;
      }
 
+     
+     /**
+      * Wait for an individual HTMLElement to be found
+      * @param element
+      */
      public void waitForHTMLElement(final HTMLElement element) {
          int timeToWait = 50;
          Thread.yield();
@@ -99,27 +104,39 @@ public class ControlUI implements IControllerUI {
               }
           });
       }
-
       
-      //TODO: Refactor name and extract method for waiting. 
-      //TODO: Remove some logging
-      public void updateData2(final String viewKey, final PlayerStat stat) {
-           LOG.debug("updateData2: " + viewKey + " " + stat.getStatName());
-           waitForHTMLElement(HTMLElement.FOOTER);
-           waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
-           waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
-           waitForHTMLElement(HTMLElement.INPUT_SUBMIT);
-           LOG.debug("part2");
+     /**
+      * Wait for a list of HTMLElements to be found
+      * If an empty list is provided the following default list is called
+      * waitForHtmlElements(HTMLElement.FOOTER, HTMLElement.SORT_SELECTBOX, HTMLElement.VIEW_SELECTBOX, HTMLElement.INPUT_SUBMIT);
+      * @param elements
+      */
+      public void waitForHtmlElements(HTMLElement ... elements) {
+          if(elements.length == 0) {
+              waitForHtmlElements(HTMLElement.FOOTER, HTMLElement.SORT_SELECTBOX, HTMLElement.VIEW_SELECTBOX, HTMLElement.INPUT_SUBMIT);
+          }
+          else {
+              for(HTMLElement element : elements) {
+                  waitForHTMLElement(element);
+              }
+          }
+      }
+
+      /**
+       * Wait for all elements to load on the page then select the view and stat dropdowns and click SHOW to update the data.
+       */
+      public void updateData(final String viewKey, final PlayerStat stat) {
+           waitForHtmlElements();
            sortSelectbox.selectOption(stat);
            viewSelectbox.selectOption(viewKey);
            clickShow();
            waitForHTMLElement(HTMLElement.FOOTER);
       }
-
-      public void home() {
-           driver.get("http://fantasy.premierleague.com/stats/elements/");
-      }
-
+    
+      
+      /**
+       * TODO: Remove the XPath expressions as it's now always incorrect due to a HTML change on the page. Just use the css selector.
+       */
       public void clickShow() {
            try {
                driver.findElement(By.xpath("/html/body/div[3]/div/div/div/section/form/input")).click();

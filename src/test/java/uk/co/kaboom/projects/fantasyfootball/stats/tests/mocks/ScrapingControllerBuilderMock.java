@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.co.kaboom.projets.fantasyfootball.stats.config.URLConfig;
 import uk.co.kaboom.projets.fantasyfootball.stats.controllers.IScrapingController;
 import uk.co.kaboom.projets.fantasyfootball.stats.controllers.IScrapingControllerBuilder;
 import uk.co.kaboom.projets.fantasyfootball.stats.controllers.ScrapingController;
@@ -28,7 +29,7 @@ import uk.co.kaboom.projets.fantasyfootball.stats.ui.IControllerUI;
 public class ScrapingControllerBuilderMock implements IScrapingControllerBuilder {
 
      @SuppressWarnings("unused")
-     private static final Logger logger = LoggerFactory.getLogger(ScrapingControllerBuilderMock.class);
+     private static final Logger LOG = LoggerFactory.getLogger(ScrapingControllerBuilderMock.class);
 
      public PageProcessorMock pageProcessor = new PageProcessorMock();
      public EnumSet<PlayerStat> playerStats = EnumSet.allOf(PlayerStat.class);
@@ -36,7 +37,7 @@ public class ScrapingControllerBuilderMock implements IScrapingControllerBuilder
 
      public synchronized IScrapingController getThreadedInstance(Team team) {
           WebDriver driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.FIREFOX);
-          driver.get("http://fantasy.premierleague.com/stats/elements/");
+          driver.get(URLConfig.MAIN_FPL_URL.getUrl());
 
           IControllerUI controlUI = new ControlUI(viewSelectionMap, playerStats, driver);
 

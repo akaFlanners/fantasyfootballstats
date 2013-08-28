@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.co.kaboom.projets.fantasyfootball.stats.config.URLConfig;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.Player;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
 import uk.co.kaboom.projets.fantasyfootball.stats.persistence.PersistenceManager;
@@ -69,17 +70,14 @@ public class TestPersistence {
       */
      @Test
      public void testUpdateDataWithGoodData() {
-          driver.get("http://fantasy.premierleague.com/stats/elements/");
-          By locator = By.id("id_stat_filter");
+          driver.get(URLConfig.MAIN_FPL_URL.getUrl());
+          By locator = By.id(HTMLElement.SORT_SELECTBOX.name());
 
           String expectedText;
           Select select;
           String actualText;
 
-          controlUI.waitForHTMLElement(HTMLElement.FOOTER);
-          controlUI.waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
-          controlUI.waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
-          controlUI.waitForHTMLElement(HTMLElement.INPUT_SUBMIT);
+          controlUI.waitForHtmlElements();
           controlUI.getSortSelectionHandler().selectOption(PlayerStat.CLEAN_SHEETS);
 
 
@@ -89,10 +87,7 @@ public class TestPersistence {
 
           assertEquals("Expected Clean sheets: ", expectedText, actualText);
 
-          controlUI.waitForHTMLElement(HTMLElement.FOOTER);
-          controlUI.waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
-          controlUI.waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
-          controlUI.waitForHTMLElement(HTMLElement.INPUT_SUBMIT);
+          controlUI.waitForHtmlElements();
           controlUI.getSortSelectionHandler().selectOption(PlayerStat.BONUS);
 
           expectedText = "Bonus";
@@ -102,10 +97,7 @@ public class TestPersistence {
           assertEquals("Expected Bonus: ", expectedText, actualText);
 
 
-          controlUI.waitForHTMLElement(HTMLElement.FOOTER);
-          controlUI.waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
-          controlUI.waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
-          controlUI.waitForHTMLElement(HTMLElement.INPUT_SUBMIT);
+          controlUI.waitForHtmlElements();
           controlUI.getSortSelectionHandler().selectOption(PlayerStat.EA_SPORTS_PPI);
 
           expectedText = "EA SPORTS PPI";
@@ -121,17 +113,15 @@ public class TestPersistence {
       */
      @Test
      public void testUpdateDataWithBadData() {
-          driver.get("http://fantasy.premierleague.com/stats/elements/");
+          driver.get(URLConfig.MAIN_FPL_URL.getUrl());
 
-          By locator = By.id("id_stat_filter");
+          By locator = By.id(HTMLElement.SORT_SELECTBOX.name());
 
           String expectedText;
           Select select;
           String actualText;
 
-          controlUI.waitForHTMLElement(HTMLElement.FOOTER);
-          controlUI.waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
-          controlUI.waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
+          controlUI.waitForHtmlElements();
           controlUI.getSortSelectionHandler().selectOption(PlayerStat.EA_SPORTS_PPI);
 
           expectedText = "EA SPORTS PPI";
@@ -140,9 +130,7 @@ public class TestPersistence {
 
           assertEquals("Expected EA SPORTS PPI: ", expectedText, actualText);
 
-          controlUI.waitForHTMLElement(HTMLElement.FOOTER);
-          controlUI.waitForHTMLElement(HTMLElement.SORT_SELECTBOX);
-          controlUI.waitForHTMLElement(HTMLElement.VIEW_SELECTBOX);
+          controlUI.waitForHtmlElements();
           controlUI.getSortSelectionHandler().selectOption(PlayerStat.PLAYER_INDEX); //Attempt to select value that does not exist?
 
           //Drop-down should remain as it was.

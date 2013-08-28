@@ -36,14 +36,14 @@ public class PageProcessor implements IPageProcessor {
       */
      public void process(final String viewKey, final PlayerStat stat) {
           LOG.debug("process");
-          controlUI.updateData2(viewKey, stat);
+          controlUI.updateData(viewKey, stat);
           captureInitialData();                      //We run this additional step of adding the player into the map on the fist pass through.
           processRetrievedData(stat);
      }
 
      public void process2(final String viewKey, final PlayerStat stat) {
           LOG.debug("process2");
-          controlUI.updateData2(viewKey, stat);
+          controlUI.updateData(viewKey, stat);
 
           processRetrievedData(stat);
      }

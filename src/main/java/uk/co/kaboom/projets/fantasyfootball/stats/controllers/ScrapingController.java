@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.co.kaboom.projets.fantasyfootball.stats.config.URLConfig;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.Team;
 import uk.co.kaboom.projets.fantasyfootball.stats.persistence.PersistenceManager;
@@ -52,7 +53,7 @@ public class ScrapingController implements IScrapingController, Runnable {
                   LOG.warn(e.getMessage() + " " + e.getStackTrace());
                   System.out.println(e.getMessage() + " " + e.getStackTrace());
                   WebDriver driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.FIREFOX);
-                  driver.get("http://fantasy.premierleague.com/stats/elements/");
+                  driver.get(URLConfig.MAIN_FPL_URL.getUrl());
                   scrape();
               }
               complete();
