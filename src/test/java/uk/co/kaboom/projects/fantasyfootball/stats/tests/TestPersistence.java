@@ -20,7 +20,7 @@ import uk.co.kaboom.projets.fantasyfootball.stats.model.Player;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
 import uk.co.kaboom.projets.fantasyfootball.stats.persistence.PersistenceManager;
 import uk.co.kaboom.projets.fantasyfootball.stats.processing.PageProcessor;
-import uk.co.kaboom.projets.fantasyfootball.stats.selenium.WedDriverFactory;
+import uk.co.kaboom.projets.fantasyfootball.stats.selenium.WebDriverFactory;
 import uk.co.kaboom.projets.fantasyfootball.stats.ui.ControlUI;
 import uk.co.kaboom.projets.fantasyfootball.stats.ui.HTMLElement;
 
@@ -36,7 +36,7 @@ public class TestPersistence {
 
      @Before
      public void setUp() throws Exception {
-         driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.FIREFOX);
+         driver = WebDriverFactory.getDriver(WebDriverFactory.BROWSER.FIREFOX);
 
          playerDataMap = new HashMap<String, Player>();
          Map<String, String> viewSelectionMap = new HashMap<String, String>();
@@ -65,13 +65,11 @@ public class TestPersistence {
      /**
       * Selects a drop-down 3 times.
       * Confirms that the correct drop-down is selected.
-      * TODO: Refactor a method in ControlUI to JUST perform waiting for all the elements on the page - DRY principle.
-      * TODO: Consider making location of the page a constant.
       */
      @Test
      public void testUpdateDataWithGoodData() {
           driver.get(URLConfig.MAIN_FPL_URL.getUrl());
-          By locator = By.id(HTMLElement.SORT_SELECTBOX.name());
+          By locator = By.id(HTMLElement.SORT_SELECTBOX.getName());
 
           String expectedText;
           Select select;
@@ -115,7 +113,7 @@ public class TestPersistence {
      public void testUpdateDataWithBadData() {
           driver.get(URLConfig.MAIN_FPL_URL.getUrl());
 
-          By locator = By.id(HTMLElement.SORT_SELECTBOX.name());
+          By locator = By.id(HTMLElement.SORT_SELECTBOX.getName());
 
           String expectedText;
           Select select;

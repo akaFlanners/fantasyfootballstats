@@ -16,7 +16,8 @@ import uk.co.kaboom.projets.fantasyfootball.stats.controllers.ScrapingController
 import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.Team;
 import uk.co.kaboom.projets.fantasyfootball.stats.persistence.PersistenceManager;
-import uk.co.kaboom.projets.fantasyfootball.stats.selenium.WedDriverFactory;
+import uk.co.kaboom.projets.fantasyfootball.stats.processing.IPageProcessor;
+import uk.co.kaboom.projets.fantasyfootball.stats.selenium.WebDriverFactory;
 import uk.co.kaboom.projets.fantasyfootball.stats.ui.ControlUI;
 import uk.co.kaboom.projets.fantasyfootball.stats.ui.IControllerUI;
 
@@ -36,7 +37,7 @@ public class ScrapingControllerBuilderMock implements IScrapingControllerBuilder
      public Map<String, String> viewSelectionMap = new HashMap<String, String>();
 
      public synchronized IScrapingController getThreadedInstance(Team team) {
-          WebDriver driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.FIREFOX);
+          WebDriver driver = WebDriverFactory.getDriver(WebDriverFactory.BROWSER.FIREFOX);
           driver.get(URLConfig.MAIN_FPL_URL.getUrl());
 
           IControllerUI controlUI = new ControlUI(viewSelectionMap, playerStats, driver);

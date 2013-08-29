@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.co.kaboom.projets.fantasyfootball.stats.exceptions.PlayerStatNotFoundException;
+import uk.co.kaboom.projets.fantasyfootball.stats.model.IPlayerManager;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.Player;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerManager;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
@@ -49,7 +50,7 @@ public class PageProcessor implements IPageProcessor {
      }
 
      private void captureInitialData() {
-               PlayerManager pm = new PlayerManager();
+               IPlayerManager pm = new PlayerManager();
                int numOfRows = driver.findElements(By.xpath("//*[@id='ism']/section[1]/table/tbody/tr")).size();
 
                for(int i=1; i<=numOfRows; i++) {
@@ -59,7 +60,7 @@ public class PageProcessor implements IPageProcessor {
      }
 
      private void processRetrievedData(final PlayerStat stat) {
-          PlayerManager pm = new PlayerManager();
+          IPlayerManager pm = new PlayerManager();
           int numOfRows = driver.findElements(By.xpath("//*[@id='ism']/section[1]/table/tbody/tr")).size();
 
           for(int i=1; i<=numOfRows; i++) {

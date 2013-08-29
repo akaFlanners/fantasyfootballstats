@@ -8,7 +8,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 
-public class WedDriverFactory {
+public class WebDriverFactory {
      public static enum BROWSER {FIREFOX, CHROME};
 
      public static synchronized WebDriver getDriver(final BROWSER browser) {

@@ -9,13 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.co.kaboom.projets.fantasyfootball.stats.config.URLConfig;
+import uk.co.kaboom.projets.fantasyfootball.stats.model.IPlayerManager;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.Player;
+import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerManager;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.Team;
 import uk.co.kaboom.projets.fantasyfootball.stats.persistence.PersistenceManager;
 import uk.co.kaboom.projets.fantasyfootball.stats.processing.IPageProcessor;
 import uk.co.kaboom.projets.fantasyfootball.stats.processing.PageProcessor;
-import uk.co.kaboom.projets.fantasyfootball.stats.selenium.WedDriverFactory;
+import uk.co.kaboom.projets.fantasyfootball.stats.processing.PageProcessorJSoup;
+import uk.co.kaboom.projets.fantasyfootball.stats.selenium.WebDriverFactory;
 import uk.co.kaboom.projets.fantasyfootball.stats.ui.ControlUI;
 import uk.co.kaboom.projets.fantasyfootball.stats.ui.IControllerUI;
 
@@ -35,14 +38,17 @@ public class ScrapingControllerBuilder implements IScrapingControllerBuilder {
      private IPageProcessor pageProcessor;
 
      public final synchronized IScrapingController getThreadedInstance(final Team team) {
-          WebDriver driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.FIREFOX);
+          WebDriver driver = WebDriverFactory.getDriver(WebDriverFactory.BROWSER.FIREFOX);
           driver.get(URLConfig.MAIN_FPL_URL.getUrl());
 
           IControllerUI controlUI = new ControlUI(viewSelectionMap, playerStats, driver);
 
           controlUI.populateViewSelectionMap();
           controlUI.populateSortSelectionMap();
-          pageProcessor = new PageProcessor(playerDataMap, driver, controlUI);
+          
+          IPlayerManager playerManager = new PlayerManager();
+          pageProcessor = new PageProcessorJSoup(playerDataMap, driver, controlUI, playerManager);
+          
           PersistenceManager pm = new PersistenceManager("output/fantasyfootball.csv");
 
           IScrapingController sc = new ScrapingController(controlUI, pageProcessor, team, pm);

@@ -9,7 +9,7 @@ import uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat;
 import uk.co.kaboom.projets.fantasyfootball.stats.model.Team;
 import uk.co.kaboom.projets.fantasyfootball.stats.persistence.PersistenceManager;
 import uk.co.kaboom.projets.fantasyfootball.stats.processing.IPageProcessor;
-import uk.co.kaboom.projets.fantasyfootball.stats.selenium.WedDriverFactory;
+import uk.co.kaboom.projets.fantasyfootball.stats.selenium.WebDriverFactory;
 import uk.co.kaboom.projets.fantasyfootball.stats.ui.IControllerUI;
 
 /**
@@ -52,7 +52,7 @@ public class ScrapingController implements IScrapingController, Runnable {
                   failureAttempts++;
                   LOG.warn(e.getMessage() + " " + e.getStackTrace());
                   System.out.println(e.getMessage() + " " + e.getStackTrace());
-                  WebDriver driver = WedDriverFactory.getDriver(WedDriverFactory.BROWSER.FIREFOX);
+                  WebDriver driver = WebDriverFactory.getDriver(WebDriverFactory.BROWSER.FIREFOX);
                   driver.get(URLConfig.MAIN_FPL_URL.getUrl());
                   scrape();
               }
@@ -69,7 +69,7 @@ public class ScrapingController implements IScrapingController, Runnable {
           LOG.info("Completed: " + team.getTeamName());
           if (TeamQueueManager.INSTANCE.completed(team)) {
                LOG.info("All Complete: " + team.getTeamName());
-               controlUI.getDriver().close();
+               controlUI.getDriver().close(); //TODO: Implement try catch here to resolve issues with closing browsers on occasions.
 
                LOG.info("Writing Out data");
                pm.persistToFile(pageProcessor.getDataToPersist());

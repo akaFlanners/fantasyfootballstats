@@ -1,5 +1,6 @@
 package uk.co.kaboom.projets.fantasyfootball.stats.model;
 
+import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -7,11 +8,15 @@ import org.slf4j.LoggerFactory;
 
 import uk.co.kaboom.projets.fantasyfootball.stats.exceptions.PlayerStatNotFoundException;
 
-public class PlayerManager {
+public class PlayerManager implements IPlayerManager {
 
      private static final Logger LOG = LoggerFactory.getLogger(PlayerManager.class);
 
-     public Player generateScrapedPlayer(WebDriver driver, int i) {
+     /* (non-Javadoc)
+     * @see uk.co.kaboom.projets.fantasyfootball.stats.model.IPlayerManager#generateScrapedPlayer(org.openqa.selenium.WebDriver, int)
+     */
+    @Override
+    public Player generateScrapedPlayer(WebDriver driver, int i) {
 
           Player p = new Player();
           
@@ -26,8 +31,19 @@ public class PlayerManager {
 
           return p;
      }
+    
+    /* (non-Javadoc)
+    * @see uk.co.kaboom.projets.fantasyfootball.stats.model.IPlayerManager#generateScrapedPlayer(org.openqa.selenium.WebDriver, int, org.jsoup.select.Elements cols)
+    */
+     public Player generateScrapedPlayer(WebDriver driver, int i, Elements cols) {
+         return generateScrapedPlayer(driver,  i);
+     }
 
-     public Player generateScrapedPlayerWithoutChecks(WebDriver driver, int i) {
+     /* (non-Javadoc)
+     * @see uk.co.kaboom.projets.fantasyfootball.stats.model.IPlayerManager#generateScrapedPlayerWithoutChecks(org.openqa.selenium.WebDriver, int)
+     */
+    @Override
+    public Player generateScrapedPlayerWithoutChecks(WebDriver driver, int i) {
 
           Player p = new Player();
 
@@ -36,8 +52,17 @@ public class PlayerManager {
 
           return p;
      }
+    
+    
+    public Player generateScrapedPlayerWithoutChecks(WebDriver driver, int i, Elements cols) {
+        return generateScrapedPlayerWithoutChecks(driver,  i);
+    }
 
-     public boolean updatePlayer(Player p, WebDriver driver, int i,  Player existingPlayer, PlayerStat stat) throws PlayerStatNotFoundException {
+     /* (non-Javadoc)
+     * @see uk.co.kaboom.projets.fantasyfootball.stats.model.IPlayerManager#updatePlayer(uk.co.kaboom.projets.fantasyfootball.stats.model.Player, org.openqa.selenium.WebDriver, int, uk.co.kaboom.projets.fantasyfootball.stats.model.Player, uk.co.kaboom.projets.fantasyfootball.stats.model.PlayerStat)
+     */
+    @Override
+    public boolean updatePlayer(Player p, WebDriver driver, int i,  Player existingPlayer, PlayerStat stat) throws PlayerStatNotFoundException {
           if (existingPlayer == null) {
                LOG.debug("Null returned with:  \n" + p.find(PlayerStat.PLAYER_INDEX));
                LOG.debug("PlayerData (lookup): \n" + p.getData());
@@ -54,5 +79,8 @@ public class PlayerManager {
           LOG.warn("WARN: matching up player data: \n " + existingPlayer.getData() + " \n with: \n" + p.getData());
           return false;
      }
-
+    
+     public boolean updatePlayer(Player p, WebDriver driver, int i,  Player existingPlayer, PlayerStat stat, Elements cols) throws PlayerStatNotFoundException {
+         return updatePlayer( p, driver,  i,  existingPlayer, stat); 
+     }
 }

@@ -20,7 +20,7 @@ public final class Runner {
      public static void main(final String[] args) {
           LOG.debug("Starting application");
 
-          final int numOfThreads = 3;
+          final int numOfThreads = 8;
 
           if (System.getenv("FIREFOX_HOME") != null) {
              IScrapingControllerBuilder scb = new ScrapingControllerBuilder();
